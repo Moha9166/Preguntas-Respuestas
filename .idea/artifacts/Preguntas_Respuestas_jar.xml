@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Preguntas-Respuestas:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Preguntas_Respuestas_jar</output-path>
+    <root id="archive" name="Preguntas-Respuestas.jar">
+      <element id="module-output" name="Preguntas-Respuestas" />
+    </root>
+  </artifact>
+</component>
