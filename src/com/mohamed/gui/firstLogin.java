@@ -116,8 +116,10 @@ public class firstLogin extends JFrame{
     //Start of methods
     private boolean login(String user, String pass) throws IOException, ClassNotFoundException, NoSuchAlgorithmException {
         boolean logSuccees = false;
-        if (user.equals("Admin") && pass.equals("fa585d89c851dd338a70dcf535aa2a92fee7836dd6aff1226583e88e0996293f16bc009c652826e0fc5c706695a03cddce372f139eff4d13959da6f1f5d3eabe")){
+        String adminpass ="fa585d89c851dd338a70dcf535aa2a92fee7836dd6aff1226583e88e0996293f16bc009c652826e0fc5c706695a03cddce372f139eff4d13959da6f1f5d3eabe";
+        if (user.equals("Admin") && pass.equals(adminpass)){
             passIssues.setText("Hola admin");
+            loggedUser = new user("Admin", "Admin", "Admin", adminpass, true);
             return true;
         }else{
             UserFiles uf = new UserFiles();

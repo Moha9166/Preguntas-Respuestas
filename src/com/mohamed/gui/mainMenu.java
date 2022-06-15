@@ -21,6 +21,7 @@ public class mainMenu extends JFrame{
 
     public mainMenu(user u){
         this.actualUser = u;
+        //enables admin opions if admin logedin
         //Setting the font and size fot the title
         titleLabel.setText("Preguntas y Respuestas  ");
         titleLabel.setFont(new Font("Tahoma", Font.BOLD, 30));
@@ -43,8 +44,8 @@ public class mainMenu extends JFrame{
         JMenu menu4 = new JMenu("Ver");
         menuBar.add(menu1);
         menuBar.add(menu2);
-        menuBar.add(menu4);
         menuBar.add(menu3);
+        menuBar.add(menu4);
         //Menu1 items
         JMenuItem open = new JMenuItem("Cargar Archivo de Preguntas");
         JMenuItem exit = new JMenuItem("Salir");
