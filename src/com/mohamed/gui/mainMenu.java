@@ -71,6 +71,7 @@ public class mainMenu extends JFrame{
         jugarButton.addActionListener(play);
         deleteUser.addActionListener(borar);
         newUser.addActionListener(reg);
+        newQuestion.addActionListener(newQues);
 
 
 
@@ -102,6 +103,15 @@ public class mainMenu extends JFrame{
             } catch (IOException | ClassNotFoundException ex) {
                 throw new RuntimeException(ex);
             }
+        }
+    };
+    ActionListener newQues = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            newQuestion dialog = new newQuestion();
+            dialog.pack();
+            dialog.setLocationRelativeTo(null);
+            dialog.setVisible(true);
         }
     };
 

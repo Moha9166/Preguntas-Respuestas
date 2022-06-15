@@ -114,6 +114,7 @@ public class newQuestion extends JDialog {
             String answer1 = textField2.getText();
             if (validatorShort(shortTitle, answer1)){
                 newShortQuestion(shortTitle, answer1);
+                dispose();
             }else{
                 JOptionPane.showMessageDialog(contentPane, "Completa todos los campos", "Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -124,6 +125,7 @@ public class newQuestion extends JDialog {
             String answer3 = textField4.getText();
             if (validatorTest(shortTitle, answer1, answer2, answer3)){
                 newTestQuestion(shortTitle, answer1, answer2, answer3);
+                dispose();
             }else{
                 JOptionPane.showMessageDialog(contentPane, "Completa todos los campos", "Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -166,11 +168,4 @@ public class newQuestion extends JDialog {
         qf.saveQuestions(questionLinkedList);
     }
 
-    public static void main(String[] args) {
-        newQuestion dialog = new newQuestion();
-        dialog.pack();
-        dialog.setLocationRelativeTo(null);
-        dialog.setVisible(true);
-        System.exit(0);
-    }
 }
