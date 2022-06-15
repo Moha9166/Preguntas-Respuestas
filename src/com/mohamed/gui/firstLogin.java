@@ -30,6 +30,7 @@ public class firstLogin extends JFrame{
 
     public firstLogin() throws IOException {
         setContentPane(panel);
+        setTitle("Inicio de Sesion");
         setMinimumSize( new Dimension(300,250));
         //This piece of code it takes care for setting the LookAndFeel
         try {

@@ -18,8 +18,11 @@ public class mainMenu extends JFrame{
     private JTextField textField3;
     private user actualUser;
     private Boolean fileLoaded = false;
+    private JFrame a;
 
     public mainMenu(user u){
+        setTitle("Preguntas y Respuestas");
+        this.a = this;
         this.actualUser = u;
         //enables admin opions if admin logedin
         //Setting the font and size fot the title
@@ -73,6 +76,7 @@ public class mainMenu extends JFrame{
         deleteUser.addActionListener(borar);
         newUser.addActionListener(reg);
         newQuestion.addActionListener(newQues);
+        editUser.addActionListener(updateUser);
 
 
 
@@ -83,6 +87,14 @@ public class mainMenu extends JFrame{
         public void actionPerformed(ActionEvent e) {
             System.out.println(fileLoaded);
             System.out.println(actualUser.toString());
+        }
+    };
+    ActionListener updateUser = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            editUser dialog = new editUser(actualUser, a);
+            dialog.pack();
+            dialog.setVisible(true);
         }
     };
     ActionListener reg = new ActionListener() {
@@ -100,7 +112,12 @@ public class mainMenu extends JFrame{
         public void actionPerformed(ActionEvent e) {
             UserFiles uf = new UserFiles();
             try {
-                uf.deleteUser(actualUser.getName());
+                uf.deleteUser(actualUser.getUser());
+                dispose();
+                firstLogin d = new firstLogin();
+                d.pack();
+                d.setLocationRelativeTo(null);
+                d.setVisible(true);
             } catch (IOException | ClassNotFoundException ex) {
                 throw new RuntimeException(ex);
             }

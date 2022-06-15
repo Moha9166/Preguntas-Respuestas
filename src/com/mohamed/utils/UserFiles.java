@@ -68,4 +68,27 @@ public class UserFiles {
         oos.close();
         ois.close();
     }
+    public boolean updateUser(user oldUser, user newUser) throws IOException, ClassNotFoundException {
+        boolean edit = false;
+        LinkedList<user> userLinkedList = new LinkedList<>();
+        ObjectInputStream ois = new ObjectInputStream(new FileInputStream(FILENAME));
+        userLinkedList = (LinkedList<user>) ois.readObject();
+        user toRemove = null;
+        for (user us:userLinkedList) {
+            if (us.getUser().equals(oldUser.getUser())){
+                toRemove=us;
+                edit = true;
+            }
+        }
+        if (edit && toRemove != null){
+            userLinkedList.remove(toRemove);
+            userLinkedList.add(newUser);
+        }
+        ois.close();
+        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(FILENAME));
+        oos.writeObject(userLinkedList);
+        oos.close();
+        return edit;
+
+    }
 }

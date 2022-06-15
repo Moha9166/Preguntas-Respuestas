@@ -23,6 +23,7 @@ public class newQuestion extends JDialog {
     private String questionType = "CORTA";
 
     public newQuestion() {
+        setTitle("Nueva Pregunta");
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);

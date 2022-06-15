@@ -35,6 +35,12 @@ public class user implements Serializable {
     }
     public String getSurname(){ return surname;}
 
+    public void updateUser(String user, String name, String surname, String password){
+        this.user= user;
+        this.name= name;
+        this.surname= surname;
+        this.password= password;
+    }
 
 
     @Override

@@ -32,6 +32,8 @@ public class register extends JDialog {
     private Boolean visible = false;
 
     public register() {
+        setTitle("Registro de Usuario");
+        pack();
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
