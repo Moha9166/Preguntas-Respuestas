@@ -11,10 +11,12 @@ public class question implements Serializable {
     private final String answer;
     private String answer1;
     private String answer2;
+    private String category;
     private boolean isTest = false;
 
-    public question(String type, String question, String answer, String answer1, String answer2) {
+    public question(String type, String category, String question, String answer, String answer1, String answer2) {
         this.type = type;
+        this.category = category;
         this.question = question;
         this.answer = answer;
         this.answer1 = answer1;
@@ -22,8 +24,9 @@ public class question implements Serializable {
         this.isTest = true;
     }
 
-    public question(String type, String question, String answer){
+    public question(String type, String category, String question, String answer){
         this.type = type;
+        this.category = category;
         this.question = question;
         this.answer = answer;
     }
@@ -47,6 +50,7 @@ public class question implements Serializable {
                 ", answer='" + answer + '\'' +
                 ", answer1='" + answer1 + '\'' +
                 ", answer2='" + answer2 + '\'' +
+                ", category='" + category + '\'' +
                 ", isTest=" + isTest +
                 '}';
     }

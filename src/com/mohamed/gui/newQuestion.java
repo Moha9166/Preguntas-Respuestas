@@ -1,7 +1,12 @@
 package com.mohamed.gui;
 
+import com.mohamed.question;
+import com.mohamed.utils.QuestionsFiles;
+
 import javax.swing.*;
 import java.awt.event.*;
+import java.io.IOException;
+import java.util.LinkedList;
 
 public class newQuestion extends JDialog {
     private JPanel contentPane;
@@ -46,10 +51,14 @@ public class newQuestion extends JDialog {
         //Adding tooltips
         textField2.setToolTipText("Respuesta correcta");
 
-
+        //Default button listeners
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                onOK();
+                try {
+                    onOK();
+                } catch (IOException | ClassNotFoundException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
 
@@ -82,6 +91,7 @@ public class newQuestion extends JDialog {
             textField3.setText("");
             textField4.setText(""); 
             questionType = "SHORT";
+            System.out.println(questionType);
         }
     };
     ActionListener fromShortToTest = new ActionListener() {
@@ -90,13 +100,34 @@ public class newQuestion extends JDialog {
             textField3.setEnabled(true);
             textField4.setEnabled(true);
             questionType = "TEST";
+            System.out.println(questionType);
         }
     };
     //Start of methods
-    private void onOK() {
+    private void onOK() throws IOException, ClassNotFoundException {
         // add your code here
-
-        dispose();
+        if (!cortaRadioButton.isSelected() && !testRadioButton.isSelected()){
+            JOptionPane.showMessageDialog(contentPane, "Selecciona un tipo de pregunta", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        if (questionType.toUpperCase().equals("SHORT")){
+            String shortTitle = textField1.getText();
+            String answer1 = textField2.getText();
+            if (validatorShort(shortTitle, answer1)){
+                newShortQuestion(shortTitle, answer1);
+            }else{
+                JOptionPane.showMessageDialog(contentPane, "Completa todos los campos", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } else if (questionType.toUpperCase().equals("TEST")) {
+            String shortTitle = textField1.getText();
+            String answer1 = textField2.getText();
+            String answer2 = textField3.getText();
+            String answer3 = textField4.getText();
+            if (validatorTest(shortTitle, answer1, answer2, answer3)){
+                newTestQuestion(shortTitle, answer1, answer2, answer3);
+            }else{
+                JOptionPane.showMessageDialog(contentPane, "Completa todos los campos", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }
 
     private void onCancel() {
@@ -111,7 +142,29 @@ public class newQuestion extends JDialog {
             return true;
         }
     }
-
+    public boolean validatorShort(String question, String answer1){
+        if (question.isBlank() || answer1.isBlank()){
+            return false;
+        }else {
+            return true;
+        }
+    }
+    public void newShortQuestion(String title, String answer1) throws IOException, ClassNotFoundException {
+        LinkedList<question> questionLinkedList = new LinkedList<>();
+        QuestionsFiles qf = new QuestionsFiles();
+        question qu1 = new question(questionType,comboBox1.getSelectedItem().toString() , title, answer1);
+        System.out.println(qu1.toString());
+        questionLinkedList.add(qu1);
+        qf.saveQuestions(questionLinkedList);
+    }
+    public void newTestQuestion(String title, String answer1, String answer2, String answer3) throws IOException, ClassNotFoundException {
+        LinkedList<question> questionLinkedList = new LinkedList<>();
+        QuestionsFiles qf = new QuestionsFiles();
+        question qu1 = new question(questionType,comboBox1.getSelectedItem().toString() , title, answer1, answer2, answer3);
+        questionLinkedList.add(qu1);
+        System.out.println(qu1.toString());
+        qf.saveQuestions(questionLinkedList);
+    }
 
     public static void main(String[] args) {
         newQuestion dialog = new newQuestion();
