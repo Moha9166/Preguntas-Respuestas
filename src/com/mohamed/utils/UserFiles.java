@@ -3,14 +3,17 @@ import com.mohamed.user;
 
 import javax.swing.*;
 import java.io.*;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.LinkedList;
 
 public class UserFiles {
+    //This variable gets the default Document folder route.
     private final String DOC_PATH = new JFileChooser().getFileSystemView().getDefaultDirectory().toString();
     private final String FILENAME_DEF = DOC_PATH+"\\PreguntasYRespuestas\\users.moha";
-    private final String FILENAME;
+    public final String FILENAME;
+    protected final String finaldir = DOC_PATH+"//PreguntasYRespuestas";
 
 
     public UserFiles(String FILENAME) {
@@ -21,7 +24,7 @@ public class UserFiles {
     }
 
     public void saveUsers(LinkedList<user> list) throws IOException, ClassNotFoundException {
-        String finaldir = DOC_PATH+"//PreguntasYRespuestas";
+        //It creates a directory
         if (new File(finaldir).mkdirs()){
             JOptionPane.showMessageDialog(null, "Se ha guardado en "+finaldir, "Guardado!!!", JOptionPane.INFORMATION_MESSAGE);
         }

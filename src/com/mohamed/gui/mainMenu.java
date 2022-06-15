@@ -39,9 +39,11 @@ public class mainMenu extends JFrame{
         setJMenuBar(menuBar);
         JMenu menu1 = new JMenu("Archivo");
         JMenu menu2 = new JMenu("Nuevo");
-        JMenu menu3 = new JMenu("Ver");
+        JMenu menu3 = new JMenu("Editar");
+        JMenu menu4 = new JMenu("Ver");
         menuBar.add(menu1);
         menuBar.add(menu2);
+        menuBar.add(menu4);
         menuBar.add(menu3);
         //Menu1 items
         JMenuItem open = new JMenuItem("Cargar Archivo de Preguntas");
@@ -50,37 +52,45 @@ public class mainMenu extends JFrame{
         menu1.add(exit);
         //Menu2 items
         JMenuItem newQuestion = new JMenuItem("Nueva Pregunta");
-        JMenuItem newUser = new JMenuItem("Nueva Pregunta");
+        JMenuItem newUser = new JMenuItem("Nuevo Usuario");
         menu2.add(newQuestion);
         menu2.add(newUser);
         //Menu3 items
-        JMenuItem showProfile = new JMenuItem("Ver Perfil");
+        JMenuItem editUser = new JMenuItem("Editar Mi Usuario");
+        JMenuItem deleteUser = new JMenuItem("Borrar Mi Usuario");
+        menu3.add(editUser);
+        menu3.add(deleteUser);
+        //Menu4 items
         JMenuItem showQuestions = new JMenuItem("Ver Preguntas");
         JMenuItem showUsers = new JMenuItem("Ver Usuarios");
-        JMenuItem borrar = new JMenuItem("Borrar mi usuario");
-        menu3.add(showProfile);
-        menu3.add(showQuestions);
-        menu3.add(showUsers);
-        menu3.add(borrar);
+        menu4.add(showQuestions);
+        menu4.add(showUsers);
 
         //Setting listeners
+        exit.addActionListener(salir);
         jugarButton.addActionListener(play);
-        borrar.addActionListener(borar);
+        deleteUser.addActionListener(borar);
+        newUser.addActionListener(reg);
 
 
 
     }
+    ActionListener salir = e -> System.exit(0);
     ActionListener play = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             System.out.println(fileLoaded);
-            UserFiles uf = new UserFiles();
-            try {
-                uf.deleteUser("manu");
-            } catch (IOException | ClassNotFoundException ex) {
-                throw new RuntimeException(ex);
-            }
-
+            System.out.println(actualUser.toString());
+        }
+    };
+    ActionListener reg = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            register dialog = new register();
+            dialog.setMinimumSize(new Dimension(250,350));
+            dialog.pack();
+            dialog.setLocationRelativeTo(mainPanel);
+            dialog.setVisible(true);
         }
     };
     ActionListener borar = new ActionListener() {

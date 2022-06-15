@@ -6,15 +6,15 @@ import java.io.Serializable;
 public class question implements Serializable {
     @Serial
     private static final long serialVersionUID = -2802693203686390473L;
-    private final String id;
+    private final String type;
     private final String question;
     private final String answer;
     private String answer1;
     private String answer2;
     private boolean isTest = false;
 
-    public question(String id, String question, String answer, String answer1, String answer2) {
-        this.id = id;
+    public question(String type, String question, String answer, String answer1, String answer2) {
+        this.type = type;
         this.question = question;
         this.answer = answer;
         this.answer1 = answer1;
@@ -22,28 +22,32 @@ public class question implements Serializable {
         this.isTest = true;
     }
 
-    public question(String id, String question, String answer){
-        this.id = id;
+    public question(String type, String question, String answer){
+        this.type = type;
         this.question = question;
         this.answer = answer;
     }
 
+    public boolean isTest(){
+        return isTest;
+    }
     public boolean repond(String answer){
         return this.answer.equals(answer);
+    }
+
+    public String getQuestion() {
+        return question;
     }
 
     @Override
     public String toString() {
         return "question{" +
-                "id='" + id + '\'' +
+                "type='" + type + '\'' +
                 ", question='" + question + '\'' +
                 ", answer='" + answer + '\'' +
                 ", answer1='" + answer1 + '\'' +
                 ", answer2='" + answer2 + '\'' +
+                ", isTest=" + isTest +
                 '}';
-    }
-
-    public boolean isTest(){
-        return isTest;
     }
 }
