@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.LinkedList;
 
 public class mainMenu extends JFrame{
     private JPanel mainPanel;
@@ -80,25 +81,27 @@ public class mainMenu extends JFrame{
             showUsers.setEnabled(true);
         }
         //Setting listeners
-        exit.addActionListener(salir);
-        jugarButton.addActionListener(play);
-        deleteUser.addActionListener(borar);
-        newUser.addActionListener(reg);
-        newQuestion.addActionListener(newQues);
-        editUser.addActionListener(updateUser);
+        exit.addActionListener(salirAC);
+        jugarButton.addActionListener(playAC);
+        deleteUser.addActionListener(borarAC);
+        newUser.addActionListener(regAC);
+        newQuestion.addActionListener(newQuesAC);
+        editUser.addActionListener(updateUserAC);
+        showUsers.addActionListener(showUsersAC);
 
 
 
     }
-    ActionListener salir = e -> System.exit(0);
-    ActionListener play = new ActionListener() {
+    //Start of listeners
+    ActionListener salirAC = e -> System.exit(0);
+    ActionListener playAC = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             System.out.println(fileLoaded);
             System.out.println(actualUser.toString());
         }
     };
-    ActionListener updateUser = new ActionListener() {
+    ActionListener updateUserAC = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             editUser dialog = new editUser(actualUser, a);
@@ -107,7 +110,7 @@ public class mainMenu extends JFrame{
             dialog.setVisible(true);
         }
     };
-    ActionListener reg = new ActionListener() {
+    ActionListener regAC = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             register dialog = new register();
@@ -117,7 +120,7 @@ public class mainMenu extends JFrame{
             dialog.setVisible(true);
         }
     };
-    ActionListener borar = new ActionListener() {
+    ActionListener borarAC = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             int userSelection = JOptionPane.showConfirmDialog(null, "Esta seguro de querer borrar su usuario?",
@@ -138,7 +141,7 @@ public class mainMenu extends JFrame{
             }
         }
     };
-    ActionListener newQues = new ActionListener() {
+    ActionListener newQuesAC = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             newQuestion dialog = new newQuestion();
@@ -147,5 +150,21 @@ public class mainMenu extends JFrame{
             dialog.setVisible(true);
         }
     };
-
+    ActionListener showUsersAC = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try {
+                showQuestions dialog = new showQuestions(getLLusers());
+                dialog.pack();
+                dialog.setLocationRelativeTo(null);
+                dialog.setVisible(true);
+            } catch (IOException | ClassNotFoundException ex) {
+                JOptionPane.showMessageDialog(mainPanel, "Error al cargar los usuarios", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    };
+    //Start of methods
+    public LinkedList<user> getLLusers() throws IOException, ClassNotFoundException {
+        return new UserFiles().loadUsers();
+    }
 }
