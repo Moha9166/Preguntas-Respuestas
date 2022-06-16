@@ -34,6 +34,7 @@ public class user implements Serializable {
         return password;
     }
     public String getSurname(){ return surname;}
+    public Boolean isAdmin(){ return isAdmin;}
 
     public void updateUser(String user, String name, String surname, String password){
         this.user= user;

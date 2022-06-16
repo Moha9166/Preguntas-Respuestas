@@ -24,7 +24,6 @@ public class mainMenu extends JFrame{
         setTitle("Preguntas y Respuestas");
         this.a = this;
         this.actualUser = u;
-        //enables admin opions if admin logedin
         //Setting the font and size fot the title
         titleLabel.setText("Preguntas y Respuestas  ");
         titleLabel.setFont(new Font("Tahoma", Font.BOLD, 30));
@@ -59,6 +58,8 @@ public class mainMenu extends JFrame{
         JMenuItem newUser = new JMenuItem("Nuevo Usuario");
         menu2.add(newQuestion);
         menu2.add(newUser);
+        //Disabling the creation of new users from main menu unless you are admin
+        newUser.setEnabled(false);
         //Menu3 items
         JMenuItem editUser = new JMenuItem("Editar Mi Usuario");
         JMenuItem deleteUser = new JMenuItem("Borrar Mi Usuario");
@@ -67,9 +68,17 @@ public class mainMenu extends JFrame{
         //Menu4 items
         JMenuItem showQuestions = new JMenuItem("Ver Preguntas");
         JMenuItem showUsers = new JMenuItem("Ver Usuarios");
+        //Disabling the option to see all the users and questions unless you are admin
+        showQuestions.setEnabled(false);
+        showUsers.setEnabled(false);
         menu4.add(showQuestions);
         menu4.add(showUsers);
-
+        //enables admin opions if admin logedin
+        if (u.isAdmin()){
+            newUser.setEnabled(true);
+            showQuestions.setEnabled(true);
+            showUsers.setEnabled(true);
+        }
         //Setting listeners
         exit.addActionListener(salir);
         jugarButton.addActionListener(play);
@@ -94,6 +103,7 @@ public class mainMenu extends JFrame{
         public void actionPerformed(ActionEvent e) {
             editUser dialog = new editUser(actualUser, a);
             dialog.pack();
+            dialog.setLocationRelativeTo(mainPanel);
             dialog.setVisible(true);
         }
     };
@@ -110,16 +120,21 @@ public class mainMenu extends JFrame{
     ActionListener borar = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            UserFiles uf = new UserFiles();
-            try {
-                uf.deleteUser(actualUser.getUser());
-                dispose();
-                firstLogin d = new firstLogin();
-                d.pack();
-                d.setLocationRelativeTo(null);
-                d.setVisible(true);
-            } catch (IOException | ClassNotFoundException ex) {
-                throw new RuntimeException(ex);
+            int userSelection = JOptionPane.showConfirmDialog(null, "Esta seguro de querer borrar su usuario?",
+                    "Confirmar Opcion", JOptionPane.YES_NO_OPTION,
+                    JOptionPane.INFORMATION_MESSAGE);
+            if (userSelection == 0){
+                UserFiles uf = new UserFiles();
+                try {
+                    uf.deleteUser(actualUser.getUser());
+                    dispose();
+                    firstLogin d = new firstLogin();
+                    d.pack();
+                    d.setLocationRelativeTo(null);
+                    d.setVisible(true);
+                } catch (IOException | ClassNotFoundException ex) {
+                    JOptionPane.showMessageDialog(mainPanel, "Fallo al borrar el usuario", "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
         }
     };
