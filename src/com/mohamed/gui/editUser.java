@@ -50,7 +50,11 @@ public class editUser extends JDialog {
                 try {
                     onOK();
                 } catch (NoSuchAlgorithmException | IOException | ClassNotFoundException ex) {
-                    JOptionPane.showMessageDialog(contentPane, "Ha ocurrido un error, vuelve a intentarlo", "Error", JOptionPane.ERROR_MESSAGE);
+                    if (actualUser.getUser().equals("Admin")){
+                        JOptionPane.showMessageDialog(contentPane, "No se puede modificar el usuario del Administrador", "Error", JOptionPane.ERROR_MESSAGE);
+                    }else{
+                        JOptionPane.showMessageDialog(contentPane, "Ha ocurrido un error, vuelve a intentarlo", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
             }
         });

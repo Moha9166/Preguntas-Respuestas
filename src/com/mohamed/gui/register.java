@@ -130,6 +130,10 @@ public class register extends JDialog {
     }
     public boolean register(String user, String name, String surname, String pass) throws IOException, ClassNotFoundException, NoSuchAlgorithmException {
         boolean regSucc = false;
+        if (user.equals("Admin")){
+            JOptionPane.showMessageDialog(contentPane, "No puedes crear un usuario Admin", "Error", JOptionPane.ERROR_MESSAGE);
+            return regSucc;
+        }
         if (user.isBlank() || name.isBlank() || surname.isBlank() || pass.isBlank()){
             passIssueLabel.setText("El formulario no esta completado correctamente!!!");
             passIssueLabel.setForeground(Color.RED);
