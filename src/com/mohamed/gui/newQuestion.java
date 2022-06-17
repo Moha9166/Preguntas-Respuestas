@@ -21,8 +21,11 @@ public class newQuestion extends JDialog {
     private JTextField textField3;
     private JTextField textField4;
     private String questionType = "CORTA";
+    private ImageIcon logoImage;
 
-    public newQuestion() {
+    public newQuestion(ImageIcon logoImage) {
+        this.logoImage = logoImage;
+        setIconImage(this.logoImage.getImage());
         setTitle("Nueva Pregunta");
         setContentPane(contentPane);
         setModal(true);

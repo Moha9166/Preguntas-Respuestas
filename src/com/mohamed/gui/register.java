@@ -30,8 +30,11 @@ public class register extends JDialog {
     private JButton mostrarButton;
     private JLabel passStength;
     private Boolean visible = false;
+    private ImageIcon logoImage;
 
-    public register() {
+    public register(ImageIcon logoImage) {
+        this.logoImage = logoImage;
+        setIconImage(this.logoImage.getImage());
         setTitle("Registro de Usuario");
         pack();
         setContentPane(contentPane);
@@ -162,7 +165,7 @@ public class register extends JDialog {
             LinkedList<user> usersList = new LinkedList<>();
             usersList = uf.loadUsers();
             for (user us:usersList) {
-                if (us.getUser().equals(userName)){
+                if (us.getUsername().equals(userName)){
                     return true;
                 }
             }

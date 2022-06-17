@@ -3,7 +3,6 @@ import com.mohamed.user;
 
 import javax.swing.*;
 import java.io.*;
-import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.LinkedList;
@@ -58,7 +57,7 @@ public class UserFiles {
         ObjectInputStream ois = new ObjectInputStream(new FileInputStream(FILENAME));
         userList = (LinkedList<user>) ois.readObject();
         for (user us:userList) {
-            String user = us.getUser();
+            String user = us.getUsername();
             if (user.equals(userName)){
                 userList.remove(us);
             }
@@ -75,7 +74,7 @@ public class UserFiles {
         userLinkedList = (LinkedList<user>) ois.readObject();
         user toRemove = null;
         for (user us:userLinkedList) {
-            if (us.getUser().equals(oldUser.getUser())){
+            if (us.getUsername().equals(oldUser.getUsername())){
                 toRemove=us;
                 edit = true;
             }

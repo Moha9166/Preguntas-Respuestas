@@ -5,9 +5,11 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class encrypt {
-    public String securePass(String input) throws NoSuchAlgorithmException{
+    public String algorithm= "SHA-512";;
+
+    public String securePass(String input) throws NoSuchAlgorithmException {
             // getInstance() method is called with algorithm SHA-512
-            MessageDigest md = MessageDigest.getInstance("SHA-512");
+            MessageDigest md = MessageDigest.getInstance(algorithm);
             // digest() method is called
             // to calculate message digest of the input string
             // returned as array of byte

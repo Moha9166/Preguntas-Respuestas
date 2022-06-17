@@ -6,6 +6,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 import java.util.LinkedList;
 
 public class showQuestions extends JDialog {
@@ -14,8 +15,13 @@ public class showQuestions extends JDialog {
     private JButton buttonCancel;
     private JLabel titleLabel;
     private JTable table1;
+    private ImageIcon logoImage;
 
-    public showQuestions(LinkedList<user> userLinkedList) {
+    public showQuestions(LinkedList<user> userLinkedList, ImageIcon logoImage, JFrame a) {
+        JDialog b = this;
+        this.logoImage = logoImage;
+        setLocationRelativeTo(null);
+        setIconImage(this.logoImage.getImage());
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -27,14 +33,7 @@ public class showQuestions extends JDialog {
         tableModel.addColumn("Usuario");
         tableModel.addColumn("Nombre");
         tableModel.addColumn("Apellido");
-        int as = 1;
-        for (user a:userLinkedList) {
-            tableModel.addRow(new Object[]{as,a.getUser(), a.getName(), a.getSurname()});
-            as++;
-        }
-
-
-
+        fillTable(userLinkedList, tableModel);
 
 
         buttonOK.addActionListener(new ActionListener() {
@@ -64,13 +63,51 @@ public class showQuestions extends JDialog {
                 onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+
+
+        table1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+            }
+        });
+
         table1.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                System.out.println("asdfasdf");
+                String user = (String)table1.getValueAt(table1.getSelectedRow(), 1);
+                String name = (String)table1.getValueAt(table1.getSelectedRow(), 1);
+                String surname = (String)table1.getValueAt(table1.getSelectedRow(), 1);
+                user tempUser = new user(user, name, surname,"tempPass");
+                editUser dialog = new editUser(tempUser, b , logoImage);
+                dialog.setLocationRelativeTo(contentPane);
+                dialog.pack();
+                dialog.setVisible(true);
+                dispose();
+                showQuestions frame = null;
+                try {
+                    frame = new showQuestions(mainMenu.getLLusers(), logoImage, a);
+                    frame.pack();
+                    frame.setLocationRelativeTo(null);
+                    frame.setVisible(true);
+                } catch (IOException | ClassNotFoundException ex) {
+                    JOptionPane.showMessageDialog(contentPane, "Error al cargar los usuarios", "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
+    }
+
+    private void fillTable(LinkedList<user> userLinkedList, DefaultTableModel tableModel) {
+        while (tableModel.getRowCount() > 0){
+            tableModel.removeRow(0);
+        }
+        int as = 1;
+        for (user us: userLinkedList) {
+            tableModel.addRow(new Object[]{as,us.getUsername(), us.getName(), us.getSurname()});
+            as++;
+        }
+        pack();
     }
 
     private void onOK() {

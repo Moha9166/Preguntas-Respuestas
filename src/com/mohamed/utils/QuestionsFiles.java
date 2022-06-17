@@ -12,7 +12,7 @@ import java.util.LinkedList;
 public class QuestionsFiles{
     private final String DOC_PATH = new JFileChooser().getFileSystemView().getDefaultDirectory().toString();
     private final String FILENAME_DEF = DOC_PATH+"\\PreguntasYRespuestas\\questions.moha";
-    public final String FILENAME;
+    private final String FILENAME;
     protected final String finaldir = DOC_PATH+"//PreguntasYRespuestas";
 
 
@@ -73,4 +73,7 @@ public class QuestionsFiles{
         ois.close();
     }
 
+    public String getFILENAME() {
+        return FILENAME;
+    }
 }

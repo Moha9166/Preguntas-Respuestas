@@ -1,18 +1,16 @@
 package com.mohamed;
 
 import com.mohamed.gui.firstLogin;
-import com.mohamed.utils.UserFiles;
-
 import javax.swing.*;
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-import java.util.LinkedList;
-
+import java.net.URL;
 
 public class Main {
-    public static void main(String[] args) throws NoSuchAlgorithmException, IOException, ClassNotFoundException {
+    public static void main(String[] args){
         try{
-            firstLogin d = new firstLogin();
+            URL logoURL = new URL("https://raw.githubusercontent.com/Moha9166/logos/main/logo.png");
+            ImageIcon logo = new ImageIcon(logoURL, "logo");
+            firstLogin d = new firstLogin(logo);
             d.pack();
             d.setLocationRelativeTo(null);
             d.setVisible(true);

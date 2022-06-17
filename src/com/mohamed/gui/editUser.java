@@ -1,6 +1,5 @@
 package com.mohamed.gui;
 
-import com.mohamed.Main;
 import com.mohamed.user;
 import com.mohamed.utils.UserFiles;
 import com.mohamed.utils.encrypt;
@@ -28,12 +27,15 @@ public class editUser extends JDialog {
     private JLabel passIssues;
     private final user actualUser;
     private boolean visible;
-    private final JFrame a;
+    private JFrame a = null;
+    private JDialog b = null;
     private final boolean isUserSure = false;
-
-    public editUser(user u, JFrame a) {
+    private ImageIcon logoImage;
+    public editUser(user u, JFrame a, ImageIcon logoImage) {
+        this.logoImage = logoImage;
         this.a=a;
         this.actualUser = u;
+        setIconImage(this.logoImage.getImage());
         setContentPane(contentPane);
         setTitle("Editar Usuario");
         titleLabel.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -50,7 +52,59 @@ public class editUser extends JDialog {
                 try {
                     onOK();
                 } catch (NoSuchAlgorithmException | IOException | ClassNotFoundException ex) {
-                    if (actualUser.getUser().equals("Admin")){
+                    if (actualUser.getUsername().equals("Admin")){
+                        JOptionPane.showMessageDialog(contentPane, "No se puede modificar el usuario del Administrador", "Error", JOptionPane.ERROR_MESSAGE);
+                    }else{
+                        JOptionPane.showMessageDialog(contentPane, "Ha ocurrido un error, vuelve a intentarlo", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            }
+        });
+
+        buttonCancel.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                onCancel();
+            }
+        });
+
+        // call onCancel() when cross is clicked
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                onCancel();
+            }
+        });
+
+        // call onCancel() on ESCAPE
+        contentPane.registerKeyboardAction(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                onCancel();
+            }
+        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+    }
+    public editUser(user u, JDialog b, ImageIcon logoImage) {
+        this.logoImage = logoImage;
+        this.b=b;
+        this.actualUser = u;
+        setIconImage(this.logoImage.getImage());
+        setContentPane(contentPane);
+        setTitle("Editar Usuario");
+        titleLabel.setFont(new Font("Tahoma", Font.BOLD, 15));
+        setModal(true);
+        getRootPane().setDefaultButton(buttonSave);
+        setLocationRelativeTo(null);
+        pack();
+
+
+        //Adding listeners to the components
+        showButton.addActionListener(showPass);
+
+        buttonSave.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    onOK();
+                } catch (NoSuchAlgorithmException | IOException | ClassNotFoundException ex) {
+                    if (actualUser.getUsername().equals("Admin")){
                         JOptionPane.showMessageDialog(contentPane, "No se puede modificar el usuario del Administrador", "Error", JOptionPane.ERROR_MESSAGE);
                     }else{
                         JOptionPane.showMessageDialog(contentPane, "Ha ocurrido un error, vuelve a intentarlo", "Error", JOptionPane.ERROR_MESSAGE);
@@ -81,6 +135,7 @@ public class editUser extends JDialog {
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
+
     private void onOK() throws NoSuchAlgorithmException, IOException, ClassNotFoundException {
         int userSelection = JOptionPane.showConfirmDialog(null, "Esta seguro de querer editar el usuario?",
                 "Confirmar Opcion", JOptionPane.YES_NO_OPTION,
@@ -95,16 +150,6 @@ public class editUser extends JDialog {
                 JOptionPane.showMessageDialog(contentPane, "Se ha editado el usuario "+user, "Edicion Completada", JOptionPane.INFORMATION_MESSAGE);
             }
             dispose();
-            a.dispose();
-            Main a = new Main();
-            try{
-                firstLogin d = new firstLogin();
-                d.pack();
-                d.setLocationRelativeTo(null);
-                d.setVisible(true);
-            }catch (IOException e){
-                JOptionPane.showMessageDialog(null, ""+e, "Error", JOptionPane.ERROR_MESSAGE);
-            }
         }else {
             dispose();
         }

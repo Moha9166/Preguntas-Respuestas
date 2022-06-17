@@ -3,6 +3,11 @@ package com.mohamed;
 import java.io.Serial;
 import java.io.Serializable;
 
+/**
+ * This class is used to create a {@code Object question}
+ * @author Mohamed Yoube Bahmed.
+ * @see java.io.Serializable
+ */
 public class question implements Serializable {
     @Serial
     private static final long serialVersionUID = -2802693203686390473L;
@@ -14,6 +19,15 @@ public class question implements Serializable {
     private String category;
     private boolean isTest = false;
 
+    /**
+     * This constructor creates the {@code Object question} with the following parameters.
+     * @param type {@code String}
+     * @param category {@code String}
+     * @param question {@code String}
+     * @param answer {@code String}
+     * @param answer1 {@code String}
+     * @param answer2 {@code String}
+     */
     public question(String type, String category, String question, String answer, String answer1, String answer2) {
         this.type = type;
         this.category = category;

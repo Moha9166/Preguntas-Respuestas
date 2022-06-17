@@ -11,7 +11,6 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.LinkedList;
-import java.util.concurrent.TimeUnit;
 
 public class firstLogin extends JFrame{
     public JPanel panel;
@@ -27,9 +26,12 @@ public class firstLogin extends JFrame{
     private JButton mostrarButton;
     private user loggedUser;
     private Boolean visible = false;
+    private ImageIcon logoImage;
 
-    public firstLogin() throws IOException {
+    public firstLogin(ImageIcon logoImage) throws IOException {
+        this.logoImage = logoImage;
         setContentPane(panel);
+        setIconImage(this.logoImage.getImage());
         setTitle("Inicio de Sesion");
         setMinimumSize( new Dimension(300,250));
         //This piece of code it takes care for setting the LookAndFeel
@@ -51,8 +53,6 @@ public class firstLogin extends JFrame{
         menuBar.add(regMenu);
         regMenu.add(regItem);
         setJMenuBar(menuBar);
-        // todo Setting the frame icon
-//        setIconImage(new ImageIcon(Objects.requireNonNull(getClass().getResource("images/logo.png"))).getImage());
         //Setting Listeners to various components of the GUI
         salirButton.addActionListener(salir);
         entrarButton.addActionListener(entrar);
@@ -79,7 +79,7 @@ public class firstLogin extends JFrame{
     ActionListener reg = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            register dialog = new register();
+            register dialog = new register(logoImage);
             dialog.setMinimumSize(new Dimension(250,350));
             dialog.pack();
             dialog.setLocationRelativeTo(panel);
@@ -99,7 +99,7 @@ public class firstLogin extends JFrame{
             try {
                 if (login(user, pass)){
                     dispose();
-                    mainMenu main = new mainMenu(loggedUser);
+                    mainMenu main = new mainMenu(loggedUser, logoImage);
                     main.setVisible(true);
                     main.setLocationRelativeTo(null);
                 }else {
@@ -119,16 +119,15 @@ public class firstLogin extends JFrame{
         boolean logSuccees = false;
         String adminpass ="fa585d89c851dd338a70dcf535aa2a92fee7836dd6aff1226583e88e0996293f16bc009c652826e0fc5c706695a03cddce372f139eff4d13959da6f1f5d3eabe";
         if (user.equals("Admin") && pass.equals(adminpass)){
-            passIssues.setText("Hola admin");
             loggedUser = new user("Admin", "Admin", "Admin", adminpass, true);
             return true;
         }else{
             UserFiles uf = new UserFiles();
-            LinkedList<com.mohamed.user> userList = uf.loadUsers();
+            LinkedList<user> userList = uf.loadUsers();
             for (user u:userList) {
-                if (u.getUser().equals(user) && u.getPassword().equals(pass)){
+                if (u.getUsername().equals(user) && u.getPassword().equals(pass)){
                     loggedUser = u;
-                    return logSuccees =  true;
+                    return true;
                 }else{
                     logSuccees = false;
                 }

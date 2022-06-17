@@ -1,6 +1,7 @@
 package com.mohamed.gui;
 
 import com.mohamed.user;
+import com.mohamed.utils.QuestionsFiles;
 import com.mohamed.utils.UserFiles;
 
 import javax.swing.*;
@@ -8,35 +9,49 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.LinkedList;
 
 public class mainMenu extends JFrame{
     private JPanel mainPanel;
     private JLabel titleLabel;
-    private JButton jugarButton;
+    private JButton playButton;
     private JTextField textField1;
     private JTextField textField2;
     private JTextField textField3;
-    private user actualUser;
+    private final user actualUser;
     private Boolean fileLoaded = false;
-    private JFrame a;
+    private final JFrame a;
+    private final ImageIcon logoImage;
 
-    public mainMenu(user u){
-        setTitle("Preguntas y Respuestas");
+    /**
+     * This is a constructor for the main menu window.
+     * @param u It takes as parameter a user object
+     * @param logoImage It takes as parameter a ImageIcon
+     */
+    public mainMenu(user u, ImageIcon logoImage){
+        this.logoImage = logoImage;
         this.a = this;
         this.actualUser = u;
-        //Setting the font and size fot the title
-        titleLabel.setText("Preguntas y Respuestas  ");
-        titleLabel.setFont(new Font("Tahoma", Font.BOLD, 30));
-
-        textField1.setText(actualUser.getUser());
-        textField2.setText(actualUser.getName());
-        textField3.setText(actualUser.getSurname());
-
-
+        //Setting window parameters
+        setIconImage(this.logoImage.getImage());
+        setTitle("Preguntas y Respuestas");
         setContentPane(mainPanel);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(700,400);
+        //Setting the font and size fot the title
+        titleLabel.setText("Preguntas y Respuestas  ");
+        titleLabel.setFont(new Font("Tahoma", Font.BOLD, 30));
+        textField1.setText(actualUser.getUsername());
+        textField2.setText(actualUser.getName());
+        textField3.setText(actualUser.getSurname());
+        //Cheking if there is a Quesion File loaded
+        if (Files.exists(Path.of(new QuestionsFiles().getFILENAME()))){
+            fileLoaded = true;
+            System.out.println("El archivo existe");
+        };
+
 
         //Creating the menus
         JMenuBar menuBar = new JMenuBar();
@@ -82,7 +97,7 @@ public class mainMenu extends JFrame{
         }
         //Setting listeners
         exit.addActionListener(salirAC);
-        jugarButton.addActionListener(playAC);
+        playButton.addActionListener(playAC);
         deleteUser.addActionListener(borarAC);
         newUser.addActionListener(regAC);
         newQuestion.addActionListener(newQuesAC);
@@ -99,12 +114,13 @@ public class mainMenu extends JFrame{
         public void actionPerformed(ActionEvent e) {
             System.out.println(fileLoaded);
             System.out.println(actualUser.toString());
+            System.out.println(a.getName());
         }
     };
     ActionListener updateUserAC = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            editUser dialog = new editUser(actualUser, a);
+            editUser dialog = new editUser(actualUser, a, logoImage);
             dialog.pack();
             dialog.setLocationRelativeTo(mainPanel);
             dialog.setVisible(true);
@@ -113,7 +129,7 @@ public class mainMenu extends JFrame{
     ActionListener regAC = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            register dialog = new register();
+            register dialog = new register(logoImage);
             dialog.setMinimumSize(new Dimension(250,350));
             dialog.pack();
             dialog.setLocationRelativeTo(mainPanel);
@@ -129,9 +145,9 @@ public class mainMenu extends JFrame{
             if (userSelection == 0){
                 UserFiles uf = new UserFiles();
                 try {
-                    uf.deleteUser(actualUser.getUser());
+                    uf.deleteUser(actualUser.getUsername());
                     dispose();
-                    firstLogin d = new firstLogin();
+                    firstLogin d = new firstLogin(logoImage);
                     d.pack();
                     d.setLocationRelativeTo(null);
                     d.setVisible(true);
@@ -144,7 +160,7 @@ public class mainMenu extends JFrame{
     ActionListener newQuesAC = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            newQuestion dialog = new newQuestion();
+            newQuestion dialog = new newQuestion(logoImage);
             dialog.pack();
             dialog.setLocationRelativeTo(null);
             dialog.setVisible(true);
@@ -154,9 +170,9 @@ public class mainMenu extends JFrame{
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
-                showQuestions dialog = new showQuestions(getLLusers());
+                showQuestions dialog = new showQuestions(getLLusers(), logoImage, a);
                 dialog.pack();
-                dialog.setLocationRelativeTo(null);
+                dialog.setLocationRelativeTo(a);
                 dialog.setVisible(true);
             } catch (IOException | ClassNotFoundException ex) {
                 JOptionPane.showMessageDialog(mainPanel, "Error al cargar los usuarios", "Error", JOptionPane.ERROR_MESSAGE);
@@ -164,7 +180,7 @@ public class mainMenu extends JFrame{
         }
     };
     //Start of methods
-    public LinkedList<user> getLLusers() throws IOException, ClassNotFoundException {
+    public static LinkedList<user> getLLusers() throws IOException, ClassNotFoundException {
         return new UserFiles().loadUsers();
     }
 }
