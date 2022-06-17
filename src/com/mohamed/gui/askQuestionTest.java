@@ -14,11 +14,18 @@ public class askQuestionTest extends JDialog {
     private JRadioButton answer1Radio;
     private JRadioButton answer2Radio;
     private JRadioButton answer3Radio;
+    private JTextField shortQuesAnsw;
+    private JLabel shortQuesLbl;
 
     public askQuestionTest(question questionIN) {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(answerQuestion);
+        shortQuesAnsw.setVisible(!questionIN.isTest());
+        shortQuesLbl.setVisible(!questionIN.isTest());
+        answer1Radio.setVisible(questionIN.isTest());
+        answer2Radio.setVisible(questionIN.isTest());
+        answer3Radio.setVisible(questionIN.isTest());
 
 
         statementField.setText(questionIN.getQuestion());
@@ -84,7 +91,7 @@ public class askQuestionTest extends JDialog {
     }
 
     public static void main(String[] args){
-        question qu1 = new question("questionType", "questionCat", "questionStatement", "correctAnswer", "answer1", "answer2");
+        question qu1 = new question("questionType", "questionCat", "questionStatement", "correctAnswer","answe1", "answer2");
         askQuestionTest dialog = new askQuestionTest(qu1);
         dialog.pack();
         dialog.setLocationRelativeTo(null);
