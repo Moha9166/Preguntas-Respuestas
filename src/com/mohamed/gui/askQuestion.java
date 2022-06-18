@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.util.*;
 
-public class askQuestionTest extends JDialog {
+public class askQuestion extends JDialog {
     private JPanel contentPane;
     private JButton answerQuestion;
     private JButton buttonCancel;
@@ -17,7 +17,7 @@ public class askQuestionTest extends JDialog {
     private JTextField shortQuesAnsw;
     private JLabel shortQuesLbl;
 
-    public askQuestionTest(question questionIN) {
+    public askQuestion(question questionIN) {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(answerQuestion);
@@ -91,8 +91,8 @@ public class askQuestionTest extends JDialog {
     }
 
     public static void main(String[] args){
-        question qu1 = new question("questionType", "questionCat", "questionStatement", "correctAnswer","answe1", "answer2");
-        askQuestionTest dialog = new askQuestionTest(qu1);
+        question qu1 = new question("questionType", "questionCat", "questionStatement", "correctAnswer");
+        askQuestion dialog = new askQuestion(qu1);
         dialog.pack();
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);

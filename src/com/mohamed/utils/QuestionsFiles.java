@@ -1,7 +1,6 @@
 package com.mohamed.utils;
 
 import com.mohamed.question;
-import com.mohamed.user;
 
 import javax.swing.*;
 import java.io.*;
@@ -12,8 +11,8 @@ import java.util.LinkedList;
 public class QuestionsFiles{
     private final String DOC_PATH = new JFileChooser().getFileSystemView().getDefaultDirectory().toString();
     private final String FILENAME_DEF = DOC_PATH+"\\PreguntasYRespuestas\\questions.moha";
+    protected final String FINALDIR = DOC_PATH+"//PreguntasYRespuestas";
     private final String FILENAME;
-    protected final String finaldir = DOC_PATH+"//PreguntasYRespuestas";
 
 
     public QuestionsFiles(String FILENAME) {
@@ -24,8 +23,8 @@ public class QuestionsFiles{
     }
 
     public void saveQuestions(LinkedList<question> list) throws IOException, ClassNotFoundException {
-        if (new File(finaldir).mkdirs()){
-            JOptionPane.showMessageDialog(null, "Se ha guardado en "+finaldir, "Guardado!!!", JOptionPane.INFORMATION_MESSAGE);
+        if (new File(FINALDIR).mkdirs()){
+            JOptionPane.showMessageDialog(null, "Se ha guardado en "+ FINALDIR, "Guardado!!!", JOptionPane.INFORMATION_MESSAGE);
         }
         LinkedList<question> pivot = new LinkedList<>();
         if (Files.exists(Path.of(FILENAME))){
@@ -44,8 +43,6 @@ public class QuestionsFiles{
             System.out.println("No existia el fichero asi que lo hemos creado");
             oos.close();
         }
-
-
 
         System.out.println("Preguntas guardadas correctamente");
     }

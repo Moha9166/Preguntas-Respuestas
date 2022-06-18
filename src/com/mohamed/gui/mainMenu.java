@@ -1,5 +1,6 @@
 package com.mohamed.gui;
 
+import com.mohamed.question;
 import com.mohamed.user;
 import com.mohamed.utils.QuestionsFiles;
 import com.mohamed.utils.UserFiles;
@@ -8,9 +9,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collections;
 import java.util.LinkedList;
 
 public class mainMenu extends JFrame{
@@ -24,6 +27,7 @@ public class mainMenu extends JFrame{
     private Boolean fileLoaded = false;
     private final JFrame a;
     private final ImageIcon logoImage;
+    private String filenameFromUser;
 
     /**
      * This is a constructor for the main menu window.
@@ -46,11 +50,8 @@ public class mainMenu extends JFrame{
         textField1.setText(actualUser.getUsername());
         textField2.setText(actualUser.getName());
         textField3.setText(actualUser.getSurname());
-        //Cheking if there is a Quesion File loaded
-        if (Files.exists(Path.of(new QuestionsFiles().getFILENAME()))){
-            fileLoaded = true;
-            System.out.println("El archivo existe");
-        };
+        //Checking if there is a Question File loaded
+        checkIfFileLoaded();
 
 
         //Creating the menus
@@ -89,7 +90,7 @@ public class mainMenu extends JFrame{
         showUsers.setEnabled(false);
         menu4.add(showQuestions);
         menu4.add(showUsers);
-        //enables admin opions if admin logedin
+        //enables admin options if admin logged
         if (u.isAdmin()){
             newUser.setEnabled(true);
             showQuestions.setEnabled(true);
@@ -103,6 +104,7 @@ public class mainMenu extends JFrame{
         newQuestion.addActionListener(newQuesAC);
         editUser.addActionListener(updateUserAC);
         showUsers.addActionListener(showUsersAC);
+        open.addActionListener(loadQuestions);
 
 
 
@@ -112,9 +114,32 @@ public class mainMenu extends JFrame{
     ActionListener playAC = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            System.out.println(fileLoaded);
-            System.out.println(actualUser.toString());
-            System.out.println(a.getName());
+            checkIfFileLoaded();
+            if (!fileLoaded){
+                JOptionPane.showMessageDialog(mainPanel, "Carga un archivo de preguntas primero", "No hay preguntas", JOptionPane.INFORMATION_MESSAGE);
+            }else{
+                QuestionsFiles qf;
+                if (filenameFromUser == null){
+                    qf = new QuestionsFiles();
+                }else{
+                    qf = new QuestionsFiles(filenameFromUser);
+                }
+                try {
+                    LinkedList<question> questionLinkedList = qf.loadQuestions();
+                    for (question asdf:questionLinkedList) {
+                        askQuestion dialog = new askQuestion(asdf);
+                        dialog.pack();
+                        dialog.setLocationRelativeTo(null);
+                        dialog.setVisible(true);
+                    }
+                } catch (IOException | ClassNotFoundException ex) {
+                    JOptionPane.showMessageDialog(mainPanel, "Error al cargar el archivo de preguntas", "Error!!!", JOptionPane.ERROR_MESSAGE);
+                }catch (ClassCastException exx){
+                    JOptionPane.showMessageDialog(mainPanel, "Por favor carga un archivo de preguntas", "Error!!!", JOptionPane.ERROR_MESSAGE);
+                    filenameFromUser = null;
+                    fileLoaded = false;
+                }
+            }
         }
     };
     ActionListener updateUserAC = new ActionListener() {
@@ -160,7 +185,7 @@ public class mainMenu extends JFrame{
     ActionListener newQuesAC = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            newQuestion dialog = new newQuestion(logoImage);
+            newQuestion dialog = new newQuestion(logoImage, filenameFromUser);
             dialog.pack();
             dialog.setLocationRelativeTo(null);
             dialog.setVisible(true);
@@ -179,8 +204,26 @@ public class mainMenu extends JFrame{
             }
         }
     };
+    ActionListener loadQuestions = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            JFileChooser selectFile = new JFileChooser();
+            selectFile.setVisible(true);
+            selectFile.showOpenDialog(mainPanel);
+            selectFile.setCurrentDirectory(new File(System.getProperty("user.home")));
+            File selectedFile = selectFile.getSelectedFile();
+            filenameFromUser = selectedFile.getAbsolutePath();
+            fileLoaded = true;
+            System.out.println(filenameFromUser);
+        }
+    };
     //Start of methods
     public static LinkedList<user> getLLusers() throws IOException, ClassNotFoundException {
         return new UserFiles().loadUsers();
+    }
+    public void checkIfFileLoaded(){
+        if (Files.exists(Path.of(new QuestionsFiles().getFILENAME()))){
+            fileLoaded = true;
+        }
     }
 }

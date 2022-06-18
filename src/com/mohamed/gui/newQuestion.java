@@ -22,8 +22,10 @@ public class newQuestion extends JDialog {
     private JTextField textField4;
     private String questionType = "CORTA";
     private ImageIcon logoImage;
+    private String filenameFromUser;
 
-    public newQuestion(ImageIcon logoImage) {
+    public newQuestion(ImageIcon logoImage, String filenameFromUser) {
+        this.filenameFromUser = filenameFromUser;
         this.logoImage = logoImage;
         setIconImage(this.logoImage.getImage());
         setTitle("Nueva Pregunta");
@@ -95,7 +97,6 @@ public class newQuestion extends JDialog {
             textField3.setText("");
             textField4.setText(""); 
             questionType = "SHORT";
-            System.out.println(questionType);
         }
     };
     ActionListener fromShortToTest = new ActionListener() {
@@ -104,12 +105,10 @@ public class newQuestion extends JDialog {
             textField3.setEnabled(true);
             textField4.setEnabled(true);
             questionType = "TEST";
-            System.out.println(questionType);
         }
     };
     //Start of methods
     private void onOK() throws IOException, ClassNotFoundException {
-        // add your code here
         if (!cortaRadioButton.isSelected() && !testRadioButton.isSelected()){
             JOptionPane.showMessageDialog(contentPane, "Selecciona un tipo de pregunta", "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -140,7 +139,6 @@ public class newQuestion extends JDialog {
         // add your code here if necessary
         dispose();
     }
-
     public boolean validatorTest(String question, String answer1, String answer2, String answer3){
         if (question.isBlank() || answer1.isBlank() || answer2.isBlank() || answer3.isBlank()){
             return false;
@@ -156,16 +154,26 @@ public class newQuestion extends JDialog {
         }
     }
     public void newShortQuestion(String title, String answer1) throws IOException, ClassNotFoundException {
+        QuestionsFiles qf;
+        if (filenameFromUser == null){
+            qf = new QuestionsFiles();
+        }else{
+            qf = new QuestionsFiles(filenameFromUser);
+        }
         LinkedList<question> questionLinkedList = new LinkedList<>();
-        QuestionsFiles qf = new QuestionsFiles();
         question qu1 = new question(questionType,comboBox1.getSelectedItem().toString() , title, answer1);
         System.out.println(qu1.toString());
         questionLinkedList.add(qu1);
         qf.saveQuestions(questionLinkedList);
     }
     public void newTestQuestion(String title, String answer1, String answer2, String answer3) throws IOException, ClassNotFoundException {
+        QuestionsFiles qf;
+        if (filenameFromUser == null){
+            qf = new QuestionsFiles();
+        }else{
+            qf = new QuestionsFiles(filenameFromUser);
+        }
         LinkedList<question> questionLinkedList = new LinkedList<>();
-        QuestionsFiles qf = new QuestionsFiles();
         question qu1 = new question(questionType,comboBox1.getSelectedItem().toString() , title, answer1, answer2, answer3);
         questionLinkedList.add(qu1);
         System.out.println(qu1.toString());

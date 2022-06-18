@@ -150,6 +150,17 @@ public class editUser extends JDialog {
                 JOptionPane.showMessageDialog(contentPane, "Se ha editado el usuario "+user, "Edicion Completada", JOptionPane.INFORMATION_MESSAGE);
             }
             dispose();
+            if (a != null){
+                a.dispose();
+                try{
+                    firstLogin d = new firstLogin(logoImage);
+                    d.pack();
+                    d.setLocationRelativeTo(null);
+                    d.setVisible(true);
+                }catch (IOException e){
+                    JOptionPane.showMessageDialog(null, ""+e, "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
         }else {
             dispose();
         }

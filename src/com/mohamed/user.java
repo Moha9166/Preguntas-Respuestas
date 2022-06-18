@@ -9,8 +9,6 @@ import java.io.Serializable;
  * @see java.io.Serializable
  */
 public class user implements Serializable {
-    @Serial
-    private static final long serialVersionUID = -3888984241462075534L;
     private String username;
     private String name;
     private String surname;
