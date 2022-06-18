@@ -5,6 +5,7 @@ import com.mohamed.utils.QuestionsFiles;
 
 import javax.swing.*;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.LinkedList;
 
 public class round {
@@ -17,7 +18,7 @@ public class round {
     }
 
     public void setScore(int score) {
-        this.score = score;
+        this.score = score + 1;
     }
 
     public int getScore() {
@@ -44,5 +45,10 @@ public class round {
                     break;
                 }
             }
+        for (Boolean b:userScores) {
+            if (b){
+                score++;
+            }
+        }
     }
 }

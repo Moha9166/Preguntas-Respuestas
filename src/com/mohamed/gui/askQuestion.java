@@ -80,19 +80,27 @@ public class askQuestion extends JDialog {
 
     private void onOK() {
         // add your code here
-        String userAnswer;
+        String userAnswer = null;
         if (questionIN.isTest()){
-            userAnswer = bt.getSelection().getActionCommand();
+            if (answer1Radio.isSelected() || answer2Radio.isSelected() || answer3Radio.isSelected()){
+                userAnswer = bt.getSelection().getActionCommand();
+            }else{
+                JOptionPane.showMessageDialog(null, "f", "df", JOptionPane.ERROR_MESSAGE);
+            }
+            System.out.println(userAnswer);
         }else{
             userAnswer = shortQuesAnsw.getText().trim();
         }
+
+        continuePlay = true;
+
         if (questionIN.repond(userAnswer)){
             response = true;
+            dispose();
         }else{
             response = false;
+            dispose();
         }
-        continuePlay = true;
-        dispose();
     }
 
     private void onCancel() {

@@ -158,7 +158,7 @@ public class register extends JDialog {
             }
         }
         return regSucc;
-    };
+    }
     private boolean isCreated(String userName) throws IOException, ClassNotFoundException {
         UserFiles uf = new UserFiles();
         if (Files.exists(Path.of(uf.FILENAME))){
@@ -172,6 +172,6 @@ public class register extends JDialog {
         }
         uf = null;
         return false;
-    };
+    }
 
 }

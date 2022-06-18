@@ -1,12 +1,15 @@
 package com.mohamed.gui;
 
+import com.mohamed.question;
 import com.mohamed.user;
+import com.mohamed.utils.QuestionsFiles;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
+import java.net.URL;
 import java.util.LinkedList;
 
 public class showQuestions extends JDialog {
@@ -15,31 +18,30 @@ public class showQuestions extends JDialog {
     private JButton buttonCancel;
     private JLabel titleLabel;
     private JTable table1;
-    private ImageIcon logoImage;
 
-    public showQuestions(LinkedList<user> userLinkedList, ImageIcon logoImage, JFrame a) {
-        JDialog b = this;
-        this.logoImage = logoImage;
-        setLocationRelativeTo(null);
-        setIconImage(this.logoImage.getImage());
+    public showQuestions(LinkedList<question> questionsLinkedList, ImageIcon logoImage) {
+        setIconImage(logoImage.getImage());
         setContentPane(contentPane);
         setModal(true);
-        getRootPane().setDefaultButton(buttonOK);
         titleLabel.setFont(new Font("Tahoma", Font.BOLD, 15));
+        getRootPane().setDefaultButton(buttonOK);
         //Setting the table
         DefaultTableModel tableModel = new DefaultTableModel();
         table1.setModel(tableModel);
-        tableModel.addColumn(" ");
-        tableModel.addColumn("Usuario");
-        tableModel.addColumn("Nombre");
-        tableModel.addColumn("Apellido");
-        fillTable(userLinkedList, tableModel);
+        tableModel.addColumn("Nro");
+        tableModel.addColumn("Pregunta");
+        tableModel.addColumn("Respuesta Correcta");
+        tableModel.addColumn("Tipo");
+        tableModel.addColumn("Categoria");
+        tableModel.addColumn("Respuesta Adicional 1");
+        tableModel.addColumn("Respuesta Adicional 2");
+        fillTable(questionsLinkedList, tableModel);
+
 
 
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 onOK();
-
             }
         });
 
@@ -63,51 +65,6 @@ public class showQuestions extends JDialog {
                 onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-
-
-        table1.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-
-            }
-        });
-
-        table1.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                String user = (String)table1.getValueAt(table1.getSelectedRow(), 1);
-                String name = (String)table1.getValueAt(table1.getSelectedRow(), 1);
-                String surname = (String)table1.getValueAt(table1.getSelectedRow(), 1);
-                user tempUser = new user(user, name, surname,"tempPass");
-                editUser dialog = new editUser(tempUser, b , logoImage);
-                dialog.setLocationRelativeTo(contentPane);
-                dialog.pack();
-                dialog.setVisible(true);
-                dispose();
-                showQuestions frame = null;
-                try {
-                    frame = new showQuestions(mainMenu.getLLusers(), logoImage, a);
-                    frame.pack();
-                    frame.setLocationRelativeTo(null);
-                    frame.setVisible(true);
-                } catch (IOException | ClassNotFoundException ex) {
-                    JOptionPane.showMessageDialog(contentPane, "Error al cargar los usuarios", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
-    }
-
-    private void fillTable(LinkedList<user> userLinkedList, DefaultTableModel tableModel) {
-        while (tableModel.getRowCount() > 0){
-            tableModel.removeRow(0);
-        }
-        int as = 1;
-        for (user us: userLinkedList) {
-            tableModel.addRow(new Object[]{as,us.getUsername(), us.getName(), us.getSurname()});
-            as++;
-        }
-        pack();
     }
 
     private void onOK() {
@@ -119,5 +76,29 @@ public class showQuestions extends JDialog {
         // add your code here if necessary
         dispose();
     }
-
+    private void fillTable(LinkedList<question> questionLinkedList, DefaultTableModel tableModel) {
+        while (tableModel.getRowCount() > 0){
+            tableModel.removeRow(0);
+        }
+        int as = 1;
+        for (question qu: questionLinkedList) {
+            if (qu.isTest()){
+                tableModel.addRow(new Object[]{as,qu.getQuestion(), qu.getAnswer(), qu.getType(), qu.getCategory(), qu.getAnswer1(), qu.getAnswer2()});
+            }else{
+                tableModel.addRow(new Object[]{as,qu.getQuestion(), qu.getAnswer(), qu.getType(), qu.getCategory()});
+            }
+            as++;
+        }
+        setLocationRelativeTo(null);
+        pack();
+    }
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
+        LinkedList<question> asdf = new QuestionsFiles().loadQuestions();
+        URL logoURL = new URL("https://raw.githubusercontent.com/Moha9166/logos/main/logo.png");
+        ImageIcon logo = new ImageIcon(logoURL, "logo");
+        showQuestions dialog = new showQuestions(asdf, logo);
+        dialog.pack();
+        dialog.setVisible(true);
+        System.exit(0);
+    }
 }

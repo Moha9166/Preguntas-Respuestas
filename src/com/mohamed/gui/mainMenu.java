@@ -1,6 +1,5 @@
 package com.mohamed.gui;
 
-import com.mohamed.question;
 import com.mohamed.round;
 import com.mohamed.user;
 import com.mohamed.utils.QuestionsFiles;
@@ -186,7 +185,7 @@ public class mainMenu extends JFrame{
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
-                showQuestions dialog = new showQuestions(getLLusers(), logoImage, a);
+                showUsers dialog = new showUsers(getLLusers(), logoImage, a);
                 dialog.pack();
                 dialog.setLocationRelativeTo(a);
                 dialog.setVisible(true);

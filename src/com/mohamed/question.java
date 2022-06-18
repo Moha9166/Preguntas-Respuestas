@@ -47,13 +47,28 @@ public class question implements Serializable {
         this.answer = correctAnswer.trim();
     }
 
+
+    public String getType() {
+        return type;
+    }
+    public String getAnswer() {
+        return answer;
+    }
+    public String getAnswer1() {
+        return answer1;
+    }
+    public String getAnswer2() {
+        return answer2;
+    }
+    public String getCategory() {
+        return category;
+    }
     public boolean isTest(){
         return isTest;
     }
     public boolean repond(String answer){
         return this.answer.equals(answer);
     }
-
     public String getQuestion() {
         return question;
     }
