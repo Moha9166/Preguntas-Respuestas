@@ -1,5 +1,6 @@
 package com.mohamed.gui;
 
+import com.mohamed.question;
 import com.mohamed.round;
 import com.mohamed.user;
 import com.mohamed.utils.QuestionsFiles;
@@ -103,6 +104,7 @@ public class mainMenu extends JFrame{
         editUser.addActionListener(updateUserAC);
         showUsers.addActionListener(showUsersAC);
         open.addActionListener(loadQuestions);
+        showQuestions.addActionListener(showQuesions);
 
 
 
@@ -205,6 +207,26 @@ public class mainMenu extends JFrame{
             filenameFromUser = selectedFile.getAbsolutePath();
             fileLoaded = true;
             System.out.println(filenameFromUser);
+        }
+    };
+    ActionListener showQuesions = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try {
+                checkIfFileLoaded();
+                if (!fileLoaded){
+                    JOptionPane.showMessageDialog(mainPanel, "Carga un archivo de preguntas primero", "No hay preguntas", JOptionPane.INFORMATION_MESSAGE);
+                }else{
+                    LinkedList<question> asdf = new QuestionsFiles().loadQuestions();
+                    showQuestions dialog = new showQuestions(asdf, logoImage);
+                    dialog.pack();
+                    dialog.setBounds(0,0,600, 300);
+                    dialog.setLocationRelativeTo(mainPanel);
+                    dialog.setVisible(true);
+                }
+            } catch (IOException | ClassNotFoundException ex) {
+                JOptionPane.showMessageDialog(mainPanel, "Error al cargar las Preguntas", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
     };
     //Start of methods

@@ -92,13 +92,5 @@ public class showQuestions extends JDialog {
         setLocationRelativeTo(null);
         pack();
     }
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
-        LinkedList<question> asdf = new QuestionsFiles().loadQuestions();
-        URL logoURL = new URL("https://raw.githubusercontent.com/Moha9166/logos/main/logo.png");
-        ImageIcon logo = new ImageIcon(logoURL, "logo");
-        showQuestions dialog = new showQuestions(asdf, logo);
-        dialog.pack();
-        dialog.setVisible(true);
-        System.exit(0);
-    }
+
 }
