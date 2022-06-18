@@ -16,8 +16,13 @@ public class askQuestion extends JDialog {
     private JRadioButton answer3Radio;
     private JTextField shortQuesAnsw;
     private JLabel shortQuesLbl;
+    private question questionIN;
+    private ButtonGroup bt;
+    private static boolean continuePlay;
+    private static boolean response;
 
     public askQuestion(question questionIN) {
+        this.questionIN = questionIN;
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(answerQuestion);
@@ -31,9 +36,12 @@ public class askQuestion extends JDialog {
         statementField.setText(questionIN.getQuestion());
         //Seting the answers to the radio buttons
         setAnswerQuestion(questionIN);
-
+        //--------------------
+        answer1Radio.setActionCommand(answer1Radio.getText());
+        answer2Radio.setActionCommand(answer2Radio.getText());
+        answer3Radio.setActionCommand(answer3Radio.getText());
         //Grouping the radio buttons
-        ButtonGroup bt = new ButtonGroup();
+        bt = new ButtonGroup();
         bt.add(answer1Radio);
         bt.add(answer2Radio);
         bt.add(answer3Radio);
@@ -44,6 +52,7 @@ public class askQuestion extends JDialog {
         answerQuestion.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 onOK();
+
             }
         });
 
@@ -71,12 +80,25 @@ public class askQuestion extends JDialog {
 
     private void onOK() {
         // add your code here
+        String userAnswer;
+        if (questionIN.isTest()){
+            userAnswer = bt.getSelection().getActionCommand();
+        }else{
+            userAnswer = shortQuesAnsw.getText().trim();
+        }
+        if (questionIN.repond(userAnswer)){
+            response = true;
+        }else{
+            response = false;
+        }
+        continuePlay = true;
         dispose();
     }
 
     private void onCancel() {
         // add your code here if necessary
         dispose();
+        continuePlay = false;
     }
 
     public void setAnswerQuestion(question question_IN_Method){
@@ -88,6 +110,13 @@ public class askQuestion extends JDialog {
             answerFields[cont].setText(q);
             cont++;
         }
+    }
+
+    public boolean isContinuePlay() {
+        return continuePlay;
+    }
+    public boolean userAnswered(){
+        return response;
     }
 
     public static void main(String[] args){

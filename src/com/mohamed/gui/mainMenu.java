@@ -1,6 +1,7 @@
 package com.mohamed.gui;
 
 import com.mohamed.question;
+import com.mohamed.round;
 import com.mohamed.user;
 import com.mohamed.utils.QuestionsFiles;
 import com.mohamed.utils.UserFiles;
@@ -13,7 +14,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Collections;
 import java.util.LinkedList;
 
 public class mainMenu extends JFrame{
@@ -28,7 +28,6 @@ public class mainMenu extends JFrame{
     private final JFrame a;
     private final ImageIcon logoImage;
     private String filenameFromUser;
-
     /**
      * This is a constructor for the main menu window.
      * @param u It takes as parameter a user object
@@ -118,24 +117,16 @@ public class mainMenu extends JFrame{
             if (!fileLoaded){
                 JOptionPane.showMessageDialog(mainPanel, "Carga un archivo de preguntas primero", "No hay preguntas", JOptionPane.INFORMATION_MESSAGE);
             }else{
-                QuestionsFiles qf;
-                if (filenameFromUser == null){
-                    qf = new QuestionsFiles();
-                }else{
-                    qf = new QuestionsFiles(filenameFromUser);
-                }
+                round rd1 = new round(actualUser);
                 try {
-                    LinkedList<question> questionLinkedList = qf.loadQuestions();
-                    for (question asdf:questionLinkedList) {
-                        askQuestion dialog = new askQuestion(asdf);
-                        dialog.pack();
-                        dialog.setLocationRelativeTo(null);
-                        dialog.setVisible(true);
-                    }
-                } catch (IOException | ClassNotFoundException ex) {
-                    JOptionPane.showMessageDialog(mainPanel, "Error al cargar el archivo de preguntas", "Error!!!", JOptionPane.ERROR_MESSAGE);
+                    rd1.startPlay(filenameFromUser);
+                    System.out.println("Puntos: "+rd1.getScore());
+                }catch (IOException | ClassNotFoundException ex) {
+                    JOptionPane.showMessageDialog(null, "Error al cargar el archivo de preguntas", "Error!!!", JOptionPane.ERROR_MESSAGE);
+                    filenameFromUser = null;
+                    fileLoaded = false;
                 }catch (ClassCastException exx){
-                    JOptionPane.showMessageDialog(mainPanel, "Por favor carga un archivo de preguntas", "Error!!!", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Por favor carga un archivo de preguntas", "Error!!!", JOptionPane.ERROR_MESSAGE);
                     filenameFromUser = null;
                     fileLoaded = false;
                 }
@@ -225,5 +216,9 @@ public class mainMenu extends JFrame{
         if (Files.exists(Path.of(new QuestionsFiles().getFILENAME()))){
             fileLoaded = true;
         }
+    }
+
+    public void setFileLoaded(Boolean fileLoaded) {
+        this.fileLoaded = fileLoaded;
     }
 }

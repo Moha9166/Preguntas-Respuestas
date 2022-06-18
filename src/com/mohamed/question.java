@@ -44,7 +44,7 @@ public class question implements Serializable {
         this.type = type;
         this.category = category;
         this.question = question;
-        this.answer = correctAnswer;
+        this.answer = correctAnswer.trim();
     }
 
     public boolean isTest(){
