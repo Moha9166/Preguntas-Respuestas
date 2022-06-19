@@ -266,7 +266,4 @@ public class mainMenu extends JFrame {
         }
     }
 
-    public void setFileLoaded(Boolean fileLoaded) {
-        this.fileLoaded = fileLoaded;
-    }
 }
