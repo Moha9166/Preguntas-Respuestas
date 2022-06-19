@@ -6,6 +6,9 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.util.*;
 
+/**
+ * This class creates a new {@code JDialog}.
+ */
 public class askQuestion extends JDialog {
     private JPanel contentPane;
     private JButton answerQuestion;
@@ -21,22 +24,27 @@ public class askQuestion extends JDialog {
     private static boolean continuePlay;
     private static boolean response;
 
+    /**
+     * This constructor is used to create a new {@code JDialog}
+     * @param questionIN the question that you want to ask
+     */
     public askQuestion(question questionIN) {
         this.questionIN = questionIN;
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(answerQuestion);
+        //Setting the different fields to answer the questions
+        //depending on if they are question type or no
         shortQuesAnsw.setVisible(!questionIN.isTest());
         shortQuesLbl.setVisible(!questionIN.isTest());
         answer1Radio.setVisible(questionIN.isTest());
         answer2Radio.setVisible(questionIN.isTest());
         answer3Radio.setVisible(questionIN.isTest());
-
-
         statementField.setText(questionIN.getQuestion());
-        //Seting the answers to the radio buttons
+        //Setting the answers to the radio buttons
         setAnswerQuestion(questionIN);
-        //--------------------
+        /*Setting an Action Command to previously being able to recover
+        the value of the radio button selected*/
         answer1Radio.setActionCommand(answer1Radio.getText());
         answer2Radio.setActionCommand(answer2Radio.getText());
         answer3Radio.setActionCommand(answer3Radio.getText());
@@ -48,14 +56,13 @@ public class askQuestion extends JDialog {
 
 
 
-
+        //Action listener to the answer button
         answerQuestion.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 onOK();
-
             }
         });
-
+        //Action listener to the cancel button
         buttonCancel.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 onCancel();
@@ -78,20 +85,22 @@ public class askQuestion extends JDialog {
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
+    /**
+     * This method is called when the answer button is pressed.
+     */
     private void onOK() {
-        // add your code here
         String userAnswer = null;
+        //here we separate between the two type of questions to check one fields or others
         if (questionIN.isTest()){
+            //If the question is a test it checks if any of the radio buttons is checked
             if (answer1Radio.isSelected() || answer2Radio.isSelected() || answer3Radio.isSelected()){
+                //here we save the action command prev set in a string
                 userAnswer = bt.getSelection().getActionCommand();
-            }else{
-                JOptionPane.showMessageDialog(null, "f", "df", JOptionPane.ERROR_MESSAGE);
             }
-            System.out.println(userAnswer);
         }else{
+            //here if is not a test we save the content of a text field.
             userAnswer = shortQuesAnsw.getText().trim();
         }
-
         continuePlay = true;
 
         if (questionIN.repond(userAnswer)){
@@ -109,6 +118,15 @@ public class askQuestion extends JDialog {
         continuePlay = false;
     }
 
+    /**
+     * This method is used to set the different answers form the object question
+     * shuffle and set the text fields
+     * @param question_IN_Method {@code question} that you want to recover the different answers.
+     * @see LinkedList
+     * @see ArrayList
+     * @see Collections
+     * @see question
+     */
     public void setAnswerQuestion(question question_IN_Method){
         ArrayList<String> answers = question_IN_Method.getAnswers();
         Collections.shuffle(answers);
@@ -125,14 +143,5 @@ public class askQuestion extends JDialog {
     }
     public boolean userAnswered(){
         return response;
-    }
-
-    public static void main(String[] args){
-        question qu1 = new question("questionType", "questionCat", "questionStatement", "correctAnswer");
-        askQuestion dialog = new askQuestion(qu1);
-        dialog.pack();
-        dialog.setLocationRelativeTo(null);
-        dialog.setVisible(true);
-        System.exit(0);
     }
 }

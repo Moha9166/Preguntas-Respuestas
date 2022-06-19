@@ -12,7 +12,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.NoSuchAlgorithmException;
 import java.util.LinkedList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+/**
+ * This class creates a {@code JDialog} to register a use
+ * @see JDialog
+ */
 public class register extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
@@ -32,6 +38,10 @@ public class register extends JDialog {
     private Boolean visible = false;
     private ImageIcon logoImage;
 
+    /**
+     * This is the main constructor for the {@code JDialog}
+     * @param logoImage a image to use as {@ImageIcon}
+     */
     public register(ImageIcon logoImage) {
         this.logoImage = logoImage;
         setIconImage(this.logoImage.getImage());
@@ -40,7 +50,7 @@ public class register extends JDialog {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
-
+        //Setting the only action listener to the show button
         mostrarButton.addActionListener(showPass);
 
         buttonOK.addActionListener(new ActionListener() {
@@ -70,6 +80,7 @@ public class register extends JDialog {
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
+        //This Action Listener is used to check if the password has the required number of chars
         passField.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
@@ -95,6 +106,9 @@ public class register extends JDialog {
         });
     }
     //Start of Listeners
+    /**
+     * This action listener when triggered shows/hides the password.
+     */
     ActionListener showPass = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -109,40 +123,53 @@ public class register extends JDialog {
     };
     //Start of methods
     private void onOK() {
-        // add your code here
         String user = userField.getText();
         String name = nameField.getText();
         String surname = surnameField.getText();
         String pass = String.valueOf(passField.getPassword());
         try {
-            if (pass.length()<8){
-                JOptionPane.showMessageDialog(contentPane, "La contraseña es demasiado corta", "Error", JOptionPane.ERROR_MESSAGE);
-            } else if (register(user, name, surname, pass)){
+            //here we check for the password complexity and if is good proceeds to register.
+            if (!isPassComplex(pass)){
+                System.out.println(pass);
+                JOptionPane.showMessageDialog(contentPane, "La contraseña no es suficientemente compleja", "Error", JOptionPane.ERROR_MESSAGE);
+            }else if (registerUser(user, name, surname, pass)){
                 JOptionPane.showMessageDialog(contentPane, "Registro completado con exito!!!","Registro", JOptionPane.INFORMATION_MESSAGE);
                 dispose();
             }
         }catch (IOException | ClassNotFoundException | NoSuchAlgorithmException e){
-            System.out.println(e.getMessage());
-            System.out.println(e.getCause());
-            System.out.println(e.getClass());
+            JOptionPane.showMessageDialog(contentPane, "Error al registrar el usuario", "Error en el Registro", JOptionPane.ERROR_MESSAGE);
         }
     }
     private void onCancel() {
-        // add your code here if necessary
         dispose();
     }
-    public boolean register(String user, String name, String surname, String pass) throws IOException, ClassNotFoundException, NoSuchAlgorithmException {
+    /**
+     * This method is in charge to check the inputs from the user and if all is good proceed to register it.
+     * @param user {@code String} the userName for the user
+     * @param name {@code String} the name for the user
+     * @param surname {@code String} the surname for the user
+     * @param pass {@code String} the password for the user
+     * @return {@code true} if the user was registered successfully, {@code false} otherwise.
+     * @throws IOException if there is some error with the users file.
+     * @throws ClassNotFoundException if there is some error creating the user object.
+     * @throws NoSuchAlgorithmException if the encryption method fails.
+     */
+    public boolean registerUser(String user, String name, String surname, String pass) throws IOException, ClassNotFoundException, NoSuchAlgorithmException {
         boolean regSucc = false;
+        //This check is to avoid users creating users named "Admin" otherwise the method automatic stops and returns false.
         if (user.equals("Admin")){
             JOptionPane.showMessageDialog(contentPane, "No puedes crear un usuario Admin", "Error", JOptionPane.ERROR_MESSAGE);
             return regSucc;
         }
+        //here it checks if all the fields where filled by the user correctly, otherwise it returns false.
         if (user.isBlank() || name.isBlank() || surname.isBlank() || pass.isBlank()){
             passIssueLabel.setText("El formulario no esta completado correctamente!!!");
             passIssueLabel.setForeground(Color.RED);
             pack();
             return regSucc;
         }else{
+            /*Here uses my own method to check if the user is already created, if not it proceeds with the creation of the
+            user and saving it and returns true*/
             if (!isCreated(user)){
                 String pass2 = new encrypt().securePass(pass);
                 user tempUS = new user(user, name, surname, pass2);
@@ -152,6 +179,7 @@ public class register extends JDialog {
                 uf.saveUsers(userList);
                 return regSucc = true;
             }else {
+                //if the execution reaches here it notifies the user.
                 passIssueLabel.setText("El usuario ya se encuentra registrado!!!");
                 passIssueLabel.setForeground(Color.RED);
                 pack();
@@ -159,6 +187,14 @@ public class register extends JDialog {
         }
         return regSucc;
     }
+
+    /**
+     * This method checks if a user is created, traveling the users file.
+     * @param userName the user name you want to check existence.
+     * @return {@code true} if the user is already created, {@code false} otherwise
+     * @throws IOException if there is some failure reading the file
+     * @throws ClassNotFoundException if the user loaded is corrupted
+     */
     private boolean isCreated(String userName) throws IOException, ClassNotFoundException {
         UserFiles uf = new UserFiles();
         if (Files.exists(Path.of(uf.FILENAME))){
@@ -173,5 +209,19 @@ public class register extends JDialog {
         uf = null;
         return false;
     }
-
+    public static boolean isPassComplex(String password) {
+        // Regex to check valid password.
+        String regex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,20}$";
+        // Compile the ReGex
+        Pattern p = Pattern.compile(regex);
+        // If the password is empty
+        // return false
+        if (password == null) {return false;}
+        // Pattern class contains matcher() method
+        // to find matching between given password
+        // and regular expression.
+        Matcher m = p.matcher(password);
+        // Return if the password matched the ReGex
+        return m.matches();
+    }
 }

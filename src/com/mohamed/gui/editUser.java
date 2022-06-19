@@ -10,6 +10,9 @@ import java.awt.event.*;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * This is a class that creates a new {@code JDialog}
+ */
 public class editUser extends JDialog {
     private JPanel contentPane;
     private JButton buttonSave;
@@ -31,12 +34,20 @@ public class editUser extends JDialog {
     private JDialog b = null;
     private final boolean isUserSure = false;
     private ImageIcon logoImage;
-    public editUser(user u, JFrame a, ImageIcon logoImage) {
+
+    /**
+     * This constructor is used when the object is created from a {@code JFrame}
+     * @param userPrev {@code user} the user that you want to edit.
+     * @param a {@code JFrame} this is the mainFrame
+     * @param logoImage {@code ImageIcon} for the window icon
+     */
+    public editUser(user userPrev, JFrame a, ImageIcon logoImage) {
         this.logoImage = logoImage;
         this.a=a;
-        this.actualUser = u;
+        this.actualUser = userPrev;
         setIconImage(this.logoImage.getImage());
         setContentPane(contentPane);
+        //Setting the title and the font for iy
         setTitle("Editar Usuario");
         titleLabel.setFont(new Font("Tahoma", Font.BOLD, 15));
         setModal(true);
@@ -82,10 +93,16 @@ public class editUser extends JDialog {
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
-    public editUser(user u, JDialog b, ImageIcon logoImage) {
+    /**
+     * This constructor is used when the object is created from a {@code JDialog}
+     * @param userPrev {@code user} the user that you want to edit.
+     * @param b {@JDialog JFrame} this is the mainFrame
+     * @param logoImage {@code ImageIcon} for the window icon
+     */
+    public editUser(user userPrev, JDialog b, ImageIcon logoImage) {
         this.logoImage = logoImage;
         this.b=b;
-        this.actualUser = u;
+        this.actualUser = userPrev;
         setIconImage(this.logoImage.getImage());
         setContentPane(contentPane);
         setTitle("Editar Usuario");
@@ -135,7 +152,15 @@ public class editUser extends JDialog {
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
-
+    /**
+     * This method it edits the selected user.
+     * @throws NoSuchAlgorithmException when the encryption fails.
+     * @throws IOException when the read/write file fails
+     * @throws ClassNotFoundException when no user is found.
+     * @see UserFiles
+     * @see encrypt
+     * @see firstLogin
+     */
     private void onOK() throws NoSuchAlgorithmException, IOException, ClassNotFoundException {
         int userSelection = JOptionPane.showConfirmDialog(null, "Esta seguro de querer editar el usuario?",
                 "Confirmar Opcion", JOptionPane.YES_NO_OPTION,
