@@ -7,6 +7,7 @@ import com.mohamed.utils.QuestionsFiles;
 import com.mohamed.utils.UserFiles;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,7 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.LinkedList;
 
-public class mainMenu extends JFrame{
+public class mainMenu extends JFrame {
     private JPanel mainPanel;
     private JLabel titleLabel;
     private JButton playButton;
@@ -28,12 +29,14 @@ public class mainMenu extends JFrame{
     private final JFrame a;
     private final ImageIcon logoImage;
     private String filenameFromUser;
+
     /**
      * This is a constructor for the main menu window.
-     * @param u It takes as parameter a user object
+     *
+     * @param u         It takes as parameter a user object
      * @param logoImage It takes as parameter a ImageIcon
      */
-    public mainMenu(user u, ImageIcon logoImage){
+    public mainMenu(user u, ImageIcon logoImage) {
         this.logoImage = logoImage;
         this.a = this;
         this.actualUser = u;
@@ -42,7 +45,7 @@ public class mainMenu extends JFrame{
         setTitle("Preguntas y Respuestas");
         setContentPane(mainPanel);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(700,400);
+        setSize(700, 400);
         //Setting the font and size fot the title
         titleLabel.setText("Preguntas y Respuestas  ");
         titleLabel.setFont(new Font("Tahoma", Font.BOLD, 30));
@@ -84,13 +87,16 @@ public class mainMenu extends JFrame{
         //Menu4 items
         JMenuItem showQuestions = new JMenuItem("Ver Preguntas");
         JMenuItem showUsers = new JMenuItem("Ver Usuarios");
+        JMenuItem showHelp = new JMenuItem("Ayuda");
         //Disabling the option to see all the users and questions unless you are admin
         showQuestions.setEnabled(false);
         showUsers.setEnabled(false);
+        menu4.add(showHelp);
+        menu4.addSeparator();
         menu4.add(showQuestions);
         menu4.add(showUsers);
         //enables admin options if admin logged
-        if (u.isAdmin()){
+        if (u.isAdmin()) {
             newUser.setEnabled(true);
             showQuestions.setEnabled(true);
             showUsers.setEnabled(true);
@@ -105,28 +111,38 @@ public class mainMenu extends JFrame{
         showUsers.addActionListener(showUsersAC);
         open.addActionListener(loadQuestions);
         showQuestions.addActionListener(showQuesions);
-
+        showHelp.addActionListener(showHelpAC);
 
 
     }
+
     //Start of listeners
+    ActionListener showHelpAC = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            showHelp dialog = new showHelp(logoImage);
+            dialog.pack();
+            dialog.setLocationRelativeTo(mainPanel);
+            dialog.setVisible(true);
+        }
+    };
     ActionListener salirAC = e -> System.exit(0);
     ActionListener playAC = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             checkIfFileLoaded();
-            if (!fileLoaded){
+            if (!fileLoaded) {
                 JOptionPane.showMessageDialog(mainPanel, "Carga un archivo de preguntas primero", "No hay preguntas", JOptionPane.INFORMATION_MESSAGE);
-            }else{
+            } else {
                 round rd1 = new round(actualUser);
                 try {
                     rd1.startPlay(filenameFromUser);
-                    System.out.println("Puntos: "+rd1.getScore());
-                }catch (IOException | ClassNotFoundException ex) {
+                    System.out.println("Puntos: " + rd1.getScore());
+                } catch (IOException | ClassNotFoundException ex) {
                     JOptionPane.showMessageDialog(null, "Error al cargar el archivo de preguntas", "Error!!!", JOptionPane.ERROR_MESSAGE);
                     filenameFromUser = null;
                     fileLoaded = false;
-                }catch (ClassCastException exx){
+                } catch (ClassCastException exx) {
                     JOptionPane.showMessageDialog(null, "Por favor carga un archivo de preguntas", "Error!!!", JOptionPane.ERROR_MESSAGE);
                     filenameFromUser = null;
                     fileLoaded = false;
@@ -147,7 +163,7 @@ public class mainMenu extends JFrame{
         @Override
         public void actionPerformed(ActionEvent e) {
             register dialog = new register(logoImage);
-            dialog.setMinimumSize(new Dimension(250,350));
+            dialog.setMinimumSize(new Dimension(250, 350));
             dialog.pack();
             dialog.setLocationRelativeTo(mainPanel);
             dialog.setVisible(true);
@@ -159,7 +175,7 @@ public class mainMenu extends JFrame{
             int userSelection = JOptionPane.showConfirmDialog(null, "Esta seguro de querer borrar su usuario?",
                     "Confirmar Opcion", JOptionPane.YES_NO_OPTION,
                     JOptionPane.INFORMATION_MESSAGE);
-            if (userSelection == 0){
+            if (userSelection == 0) {
                 UserFiles uf = new UserFiles();
                 try {
                     uf.deleteUser(actualUser.getUsername());
@@ -199,14 +215,23 @@ public class mainMenu extends JFrame{
     ActionListener loadQuestions = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
+
+
             JFileChooser selectFile = new JFileChooser();
+            selectFile.addChoosableFileFilter(new FileNameExtensionFilter("Questions File", "moha"));
             selectFile.setVisible(true);
             selectFile.showOpenDialog(mainPanel);
             selectFile.setCurrentDirectory(new File(System.getProperty("user.home")));
             File selectedFile = selectFile.getSelectedFile();
-            filenameFromUser = selectedFile.getAbsolutePath();
-            fileLoaded = true;
-            System.out.println(filenameFromUser);
+            try {
+                filenameFromUser = selectedFile.getAbsolutePath();
+                fileLoaded = true;
+                JOptionPane.showMessageDialog(mainPanel, "Se ha cargado el archivo seleccionado", "Carga Completada", JOptionPane.INFORMATION_MESSAGE);
+            } catch (NullPointerException ex) {
+                fileLoaded = true;
+                JOptionPane.showMessageDialog(mainPanel, "No se ha selecionado ningun archivo", "Carga Interrumpida", JOptionPane.INFORMATION_MESSAGE);
+            }
+
         }
     };
     ActionListener showQuesions = new ActionListener() {
@@ -214,13 +239,13 @@ public class mainMenu extends JFrame{
         public void actionPerformed(ActionEvent e) {
             try {
                 checkIfFileLoaded();
-                if (!fileLoaded){
+                if (!fileLoaded) {
                     JOptionPane.showMessageDialog(mainPanel, "Carga un archivo de preguntas primero", "No hay preguntas", JOptionPane.INFORMATION_MESSAGE);
-                }else{
+                } else {
                     LinkedList<question> asdf = new QuestionsFiles().loadQuestions();
                     showQuestions dialog = new showQuestions(asdf, logoImage);
                     dialog.pack();
-                    dialog.setBounds(0,0,600, 300);
+                    dialog.setBounds(0, 0, 600, 300);
                     dialog.setLocationRelativeTo(mainPanel);
                     dialog.setVisible(true);
                 }
@@ -229,12 +254,14 @@ public class mainMenu extends JFrame{
             }
         }
     };
+
     //Start of methods
     public static LinkedList<user> getLLusers() throws IOException, ClassNotFoundException {
         return new UserFiles().loadUsers();
     }
-    public void checkIfFileLoaded(){
-        if (Files.exists(Path.of(new QuestionsFiles().getFILENAME()))){
+
+    public void checkIfFileLoaded() {
+        if (Files.exists(Path.of(new QuestionsFiles().getFILENAME()))) {
             fileLoaded = true;
         }
     }
