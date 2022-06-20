@@ -2,7 +2,7 @@ package tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.mohamed.user;
+import com.mohamed.domain.user;
 import org.junit.jupiter.api.*;
 
 public class userTests {

@@ -1,7 +1,7 @@
 package com.mohamed.gui;
 
 import com.mohamed.utils.UserFiles;
-import com.mohamed.user;
+import com.mohamed.domain.user;
 import com.mohamed.utils.encrypt;
 
 import javax.swing.*;

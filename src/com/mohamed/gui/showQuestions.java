@@ -1,7 +1,6 @@
 package com.mohamed.gui;
 
-import com.mohamed.question;
-import com.mohamed.user;
+import com.mohamed.domain.question;
 import com.mohamed.utils.QuestionsFiles;
 
 import javax.swing.*;
@@ -9,7 +8,6 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
-import java.net.URL;
 import java.util.LinkedList;
 
 /**

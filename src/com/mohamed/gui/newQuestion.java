@@ -1,6 +1,6 @@
 package com.mohamed.gui;
 
-import com.mohamed.question;
+import com.mohamed.domain.question;
 import com.mohamed.utils.QuestionsFiles;
 
 import javax.swing.*;

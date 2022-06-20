@@ -1,4 +1,4 @@
-package com.mohamed;
+package com.mohamed.domain;
 
 import java.io.Serial;
 import java.io.Serializable;

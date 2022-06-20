@@ -1,7 +1,6 @@
 package com.mohamed.gui;
 
-import com.mohamed.question;
-import com.mohamed.user;
+import com.mohamed.domain.user;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;

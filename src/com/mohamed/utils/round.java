@@ -1,16 +1,15 @@
 package com.mohamed.utils;
 
 import com.mohamed.gui.askQuestion;
-import com.mohamed.question;
-import com.mohamed.user;
-import com.mohamed.utils.QuestionsFiles;
+import com.mohamed.domain.question;
+import com.mohamed.domain.user;
 
 import java.io.IOException;
 import java.util.LinkedList;
 
 /**
  * This class creates the object {@code round}.
- * @see com.mohamed.user
+ * @see com.mohamed.domain.user
  */
 public class round {
     private user user;

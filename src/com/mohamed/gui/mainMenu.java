@@ -1,8 +1,8 @@
 package com.mohamed.gui;
 
-import com.mohamed.question;
+import com.mohamed.domain.question;
 import com.mohamed.utils.round;
-import com.mohamed.user;
+import com.mohamed.domain.user;
 import com.mohamed.utils.QuestionsFiles;
 import com.mohamed.utils.UserFiles;
 

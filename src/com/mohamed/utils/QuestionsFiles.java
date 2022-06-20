@@ -1,6 +1,6 @@
 package com.mohamed.utils;
 
-import com.mohamed.question;
+import com.mohamed.domain.question;
 
 import javax.swing.*;
 import java.io.*;

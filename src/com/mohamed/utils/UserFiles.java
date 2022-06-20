@@ -1,5 +1,5 @@
 package com.mohamed.utils;
-import com.mohamed.user;
+import com.mohamed.domain.user;
 
 import javax.swing.*;
 import java.io.*;
