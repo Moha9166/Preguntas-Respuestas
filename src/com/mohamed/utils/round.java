@@ -1,6 +1,8 @@
-package com.mohamed;
+package com.mohamed.utils;
 
 import com.mohamed.gui.askQuestion;
+import com.mohamed.question;
+import com.mohamed.user;
 import com.mohamed.utils.QuestionsFiles;
 
 import java.io.IOException;
@@ -8,27 +10,35 @@ import java.util.LinkedList;
 
 /**
  * This class creates the object {@code round}.
+ * @see com.mohamed.user
  */
 public class round {
     private user user;
     private int score;
-
     /**
-     * 
-     * @param user
+     * This is the constructor to create a round
+     * @param user {@code user} the user that plays the round
      */
     public round(user user) {
         this.user = user;
     }
-
+    /**
+     * This method increases the round score by one.
+     * @param score {@code int} the actual score.
+     */
     public void setScore(int score) {
         this.score = score + 1;
     }
-
     public int getScore() {
         return score;
     }
-
+    /**
+     * This method starts the round and starts showing the windows.
+     * @param filenameFromUser {@code String} this is the path for the questions file.
+     * @throws IOException if the read/write of the file fails.
+     * @throws ClassNotFoundException if one of the question is corrupted.
+     * @throws ClassCastException if the opened file does not content
+     */
     public void startPlay(String filenameFromUser) throws IOException, ClassNotFoundException, ClassCastException{
         QuestionsFiles qf;
         if (filenameFromUser == null){
@@ -37,9 +47,13 @@ public class round {
             qf = new QuestionsFiles(filenameFromUser);
         }
             LinkedList<question> questionLinkedList = qf.loadQuestions();
-            LinkedList<Boolean> userScores = new LinkedList<Boolean>();
-            for (question asdf:questionLinkedList) {
-                askQuestion dialog = new askQuestion(asdf);
+            if (questionLinkedList.size() == 0){
+                System.out.println("ta vasio");
+                return;
+            }
+            LinkedList<Boolean> userScores = new LinkedList<>();
+            for (question ques:questionLinkedList) {
+                askQuestion dialog = new askQuestion(ques);
                 dialog.pack();
                 dialog.setLocationRelativeTo(null);
                 dialog.setVisible(true);

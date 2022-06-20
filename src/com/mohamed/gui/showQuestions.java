@@ -21,17 +21,19 @@ public class showQuestions extends JDialog {
     private JButton buttonCancel;
     private JLabel titleLabel;
     private JTable table1;
+    private JLabel subtitleLabel;
 
     /**
      * THis is the only constructor for the {@code JDialog}.
      * @param questionsLinkedList {@code LinkedList} with the questions.
      * @param logoImage {@code ImageIcon} to make it icon.
      */
-    public showQuestions(LinkedList<question> questionsLinkedList, ImageIcon logoImage) {
+    public showQuestions(LinkedList<question> questionsLinkedList, ImageIcon logoImage, String filenameUser) {
         setIconImage(logoImage.getImage());
         setContentPane(contentPane);
         setModal(true);
-        titleLabel.setFont(new Font("Tahoma", Font.BOLD, 15));
+        titleLabel.setFont(new Font("Tahoma", Font.BOLD, 20));
+        titleLabel.setFont(new Font("Tahoma", Font.BOLD, 10));
         getRootPane().setDefaultButton(buttonOK);
         //Setting the table
         DefaultTableModel tableModel = new DefaultTableModel();
@@ -74,6 +76,29 @@ public class showQuestions extends JDialog {
                 onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+
+
+        table1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int userSelection = JOptionPane.showConfirmDialog(null, "Esta seguro de querer borrar la pregunta?",
+                        "Confirmar Opcion", JOptionPane.YES_NO_OPTION,
+                        JOptionPane.INFORMATION_MESSAGE);
+                super.mouseClicked(e);
+                if (userSelection == 0){
+                    String statement = (String)table1.getValueAt(table1.getSelectedRow(), 1);
+                    try{
+                        if (filenameUser == null){
+                            new QuestionsFiles().deleteQuestion(statement);
+                        }else{
+                            new QuestionsFiles(filenameUser).deleteQuestion(statement);
+                        }
+                    }catch (ClassNotFoundException | IOException ex){
+                        JOptionPane.showMessageDialog(contentPane, "Error al borrar la Pregunta", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            }
+        });
     }
 
     private void onOK() {
@@ -113,5 +138,6 @@ public class showQuestions extends JDialog {
         setLocationRelativeTo(null);
         pack();
     }
+
 
 }

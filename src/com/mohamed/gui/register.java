@@ -52,6 +52,8 @@ public class register extends JDialog {
         getRootPane().setDefaultButton(buttonOK);
         //Setting the only action listener to the show button
         mostrarButton.addActionListener(showPass);
+        //Adding tooltip to the password field
+        passField.setToolTipText("Min 8 caracteres 1 Mayuscula y 1 digito");
 
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -115,9 +117,11 @@ public class register extends JDialog {
             if (visible){
                 passField.setEchoChar('•');
                 visible = false;
+                mostrarButton.setText("Mostrar");
             }else{
                 passField.setEchoChar((char)0);
                 visible = true;
+                mostrarButton.setText("Ocultar");
             }
         }
     };
@@ -130,7 +134,6 @@ public class register extends JDialog {
         try {
             //here we check for the password complexity and if is good proceeds to register.
             if (!isPassComplex(pass)){
-                System.out.println(pass);
                 JOptionPane.showMessageDialog(contentPane, "La contraseña no es suficientemente compleja", "Error", JOptionPane.ERROR_MESSAGE);
             }else if (registerUser(user, name, surname, pass)){
                 JOptionPane.showMessageDialog(contentPane, "Registro completado con exito!!!","Registro", JOptionPane.INFORMATION_MESSAGE);
@@ -195,7 +198,7 @@ public class register extends JDialog {
      * @throws IOException if there is some failure reading the file
      * @throws ClassNotFoundException if the user loaded is corrupted
      */
-    private boolean isCreated(String userName) throws IOException, ClassNotFoundException {
+    public static boolean isCreated(String userName) throws IOException, ClassNotFoundException {
         UserFiles uf = new UserFiles();
         if (Files.exists(Path.of(uf.FILENAME))){
             LinkedList<user> usersList = new LinkedList<>();

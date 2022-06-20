@@ -79,9 +79,11 @@ public class firstLogin extends JFrame{
             if (visible){
                 passwordField1.setEchoChar('•');
                 visible = false;
+                mostrarButton.setText("Mostrar");
             }else{
                 passwordField1.setEchoChar((char)0);
                 visible = true;
+                mostrarButton.setText("Ocultar");
             }
         }
     };

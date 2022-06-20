@@ -1,7 +1,7 @@
 package com.mohamed.gui;
 
 import com.mohamed.question;
-import com.mohamed.round;
+import com.mohamed.utils.round;
 import com.mohamed.user;
 import com.mohamed.utils.QuestionsFiles;
 import com.mohamed.utils.UserFiles;
@@ -26,9 +26,9 @@ public class mainMenu extends JFrame {
     private JPanel mainPanel;
     private JLabel titleLabel;
     private JButton playButton;
-    private JTextField textField1;
-    private JTextField textField2;
-    private JTextField textField3;
+    private JLabel wellcomeLabel;
+    private JLabel scoreLabel;
+    private JLabel iconLabel;
     private final user actualUser;
     private Boolean fileLoaded = false;
     private final JFrame a;
@@ -50,12 +50,11 @@ public class mainMenu extends JFrame {
         setContentPane(mainPanel);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(700, 400);
+        wellcomeLabel.setText("Bienvenido "+actualUser.getName());
+        wellcomeLabel.setFont(new Font("Arial", Font.BOLD, 30));
         //Setting the font and size fot the title
         titleLabel.setText("Preguntas y Respuestas  ");
-        titleLabel.setFont(new Font("Tahoma", Font.BOLD, 30));
-        textField1.setText(actualUser.getUsername());
-        textField2.setText(actualUser.getName());
-        textField3.setText(actualUser.getSurname());
+        titleLabel.setFont(new Font("Tahoma", Font.BOLD, 35));
         //Checking if there is a Question File loaded
         checkIfFileLoaded();
         //Creating the menus
@@ -115,7 +114,6 @@ public class mainMenu extends JFrame {
         showQuestions.addActionListener(showQuesions);
         showHelp.addActionListener(showHelpAC);
 
-
     }
 
     //Start of listeners
@@ -154,7 +152,7 @@ public class mainMenu extends JFrame {
                 try {
                     //call the method to start playing, takes as parameter the filename.
                     rd1.startPlay(filenameFromUser);
-                    System.out.println("Puntos: " + rd1.getScore());
+                    scoreLabel.setText("Has hacertado "+ rd1.getScore()+" preguntaas");
                 } catch (IOException | ClassNotFoundException ex) {
                     //If there is some exception with the file it notifies the user
                     JOptionPane.showMessageDialog(null, "Error al cargar el archivo de preguntas", "Error!!!", JOptionPane.ERROR_MESSAGE);
@@ -300,8 +298,13 @@ public class mainMenu extends JFrame {
                 if (!fileLoaded) {
                     JOptionPane.showMessageDialog(mainPanel, "Carga un archivo de preguntas primero", "No hay preguntas", JOptionPane.INFORMATION_MESSAGE);
                 } else {
-                    LinkedList<question> asdf = new QuestionsFiles().loadQuestions();
-                    showQuestions dialog = new showQuestions(asdf, logoImage);
+                    LinkedList<question> questionLinkedList;
+                    if (filenameFromUser == null){
+                        questionLinkedList = new QuestionsFiles().loadQuestions();
+                    }else{
+                        questionLinkedList = new QuestionsFiles(filenameFromUser).loadQuestions();
+                    }
+                    showQuestions dialog = new showQuestions(questionLinkedList, logoImage, filenameFromUser);
                     dialog.pack();
                     dialog.setBounds(0, 0, 600, 300);
                     dialog.setLocationRelativeTo(mainPanel);
