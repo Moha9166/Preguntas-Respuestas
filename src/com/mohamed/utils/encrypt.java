@@ -4,9 +4,11 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * This class creates the object that is in charge of encrypting all the passwords
+ */
 public class encrypt {
-    public String algorithm= "SHA-512";;
-
+    public String algorithm= "SHA-512";
     public String securePass(String input) throws NoSuchAlgorithmException {
             // getInstance() method is called with algorithm SHA-512
             MessageDigest md = MessageDigest.getInstance(algorithm);
@@ -24,5 +26,5 @@ public class encrypt {
             }
             // return the HashText
             return hashtext;
-    };
+    }
 }

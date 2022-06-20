@@ -39,7 +39,14 @@ public class question implements Serializable {
         this.answer2 = answer2;
         this.isTest = true;
     }
-
+    /**
+     * This constructor creates the {@code Object question} with the following parameters.
+     * This constructor should be used to only create "SHORT" questions
+     * @param type {@code String} The type of the question, it should be "TEST".
+     * @param category {@code String} The category of the question.
+     * @param question {@code String} the question statement.
+     * @param correctAnswer {@code String} the first answer.
+     */
     public question(String type, String category, String question, String correctAnswer){
         this.type = type;
         this.category = category;
@@ -48,6 +55,9 @@ public class question implements Serializable {
     }
 
 
+    public String getQuestion() {
+        return question;
+    }
     public String getType() {
         return type;
     }
@@ -69,9 +79,11 @@ public class question implements Serializable {
     public boolean repond(String answer){
         return this.answer.equals(answer);
     }
-    public String getQuestion() {
-        return question;
-    }
+
+    /**
+     * This method is used to get the answers of a question.
+     * @return {@code ArrayList} with the answers.
+     */
     public ArrayList<String> getAnswers(){
         ArrayList<String> answers = new ArrayList<>();
         answers.add(answer);

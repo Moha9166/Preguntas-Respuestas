@@ -7,6 +7,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.LinkedList;
 
+/**
+ * This class creates the object that is in charge for managing the user files.
+ */
 public class UserFiles {
     //This variable gets the default Document folder route.
     private final String DOC_PATH = new JFileChooser().getFileSystemView().getDefaultDirectory().toString();
@@ -14,14 +17,30 @@ public class UserFiles {
     public final String FILENAME;
     protected final String finaldir = DOC_PATH+"//PreguntasYRespuestas";
 
-
+    /**
+     * This constructor is used when file path is provided.
+     * @param FILENAME {@code String} file path.
+     */
     public UserFiles(String FILENAME) {
         this.FILENAME = FILENAME;
     }
+
+    /**
+     * This constructor is used no when file path is provided.
+     */
     public UserFiles(){
         this.FILENAME = FILENAME_DEF;
     }
 
+    /**
+     *This method is used to save the users in a file
+     * @param list {@code LinkedList} with the users.
+     * @throws IOException if the read/write of the file fails.
+     * @throws ClassNotFoundException if one of the question is corrupted.
+     * @see user
+     * @see LinkedList
+     * @see ObjectInputStream
+     */
     public void saveUsers(LinkedList<user> list) throws IOException, ClassNotFoundException {
         //It creates a directory
         if (new File(finaldir).mkdirs()){
@@ -37,14 +56,22 @@ public class UserFiles {
             ObjectOutputStream oos = new ObjectOutputStream( new FileOutputStream(FILENAME));
             oos.writeObject(pivot);
             oos.close();
-            System.out.println("El fichero existia asi que no lo hemos creado");
         }else{
             ObjectOutputStream oos = new ObjectOutputStream( new FileOutputStream(FILENAME));
             oos.writeObject(list);
-            System.out.println("El fichero no existia asi que lo hemos creado");
             oos.close();
         }
     }
+
+    /**
+     * This method is used to load users into a linkedlist
+     * @return {@code LinkedList} with the users
+     * @throws IOException if the read/write of the file fails.
+     * @throws ClassNotFoundException if one of the question is corrupted.
+     * @see user
+     * @see LinkedList
+     * @see ObjectInputStream
+     */
     public LinkedList<user> loadUsers() throws IOException, ClassNotFoundException {
         LinkedList<user> list = new LinkedList<>();
         ObjectInputStream ois = new ObjectInputStream( new FileInputStream(FILENAME));
@@ -52,6 +79,16 @@ public class UserFiles {
         ois.close();
         return list;
     }
+
+    /**
+     * This method is used to delete users.
+     * @param userName {@code String} the username.
+     * @throws IOException if the read/write of the file fails.
+     * @throws ClassNotFoundException if one of the question is corrupted.
+     * @see LinkedList
+     * @see ObjectInputStream
+     * @see user
+     */
     public void deleteUser(String userName) throws IOException, ClassNotFoundException {
         LinkedList<user> userList = new LinkedList<>();
         ObjectInputStream ois = new ObjectInputStream(new FileInputStream(FILENAME));
@@ -67,6 +104,15 @@ public class UserFiles {
         oos.close();
         ois.close();
     }
+
+    /**
+     * This method is used to update a user
+     * @param oldUser {@code user} the user you want to edit
+     * @param newUser {@code user} the new user that you want to insert.
+     * @return {@code true} if the user is updated, {@code false} otherwise.
+     * @throws IOException if the read/write of the file fails.
+     * @throws ClassNotFoundException if one of the question is corrupted.
+     */
     public boolean updateUser(user oldUser, user newUser) throws IOException, ClassNotFoundException {
         boolean edit = false;
         LinkedList<user> userLinkedList = new LinkedList<>();

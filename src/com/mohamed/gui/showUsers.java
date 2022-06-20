@@ -1,5 +1,6 @@
 package com.mohamed.gui;
 
+import com.mohamed.question;
 import com.mohamed.user;
 
 import javax.swing.*;
@@ -9,7 +10,9 @@ import java.awt.event.*;
 import java.io.IOException;
 import java.util.LinkedList;
 
-
+/**
+ * This class creates the object {@code JDialog} to show the users in a table.
+ */
 public class showUsers extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
@@ -17,6 +20,12 @@ public class showUsers extends JDialog {
     private JLabel titleLabel;
     private JTable table1;
 
+    /**
+     * This is the only constructor for the {@code JDialog}
+     * @param userLinkedList {@code LinkedList} with all the users.
+     * @param logoImage {@code ImageIcon} to set as image-icon.
+     * @param a {@code JFrame} to set the relative position.
+     */
     public showUsers(LinkedList<user> userLinkedList, ImageIcon logoImage, JFrame a) {
         JDialog b = this;
         setLocationRelativeTo(null);
@@ -28,6 +37,7 @@ public class showUsers extends JDialog {
         //Setting the table
         DefaultTableModel tableModel = new DefaultTableModel();
         table1.setModel(tableModel);
+        //setting the headers
         tableModel.addColumn(" ");
         tableModel.addColumn("Usuario");
         tableModel.addColumn("Nombre");
@@ -75,18 +85,19 @@ public class showUsers extends JDialog {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
+                //here when a user is clicked it prompts a window to edit the desired user
                 String user = (String)table1.getValueAt(table1.getSelectedRow(), 1);
                 String name = (String)table1.getValueAt(table1.getSelectedRow(), 1);
                 String surname = (String)table1.getValueAt(table1.getSelectedRow(), 1);
                 user tempUser = new user(user, name, surname,"tempPass");
+                //here I show the edit dialog
                 editUser dialog = new editUser(tempUser, b , logoImage);
                 dialog.setLocationRelativeTo(contentPane);
                 dialog.pack();
                 dialog.setVisible(true);
                 dispose();
-                showUsers frame = null;
                 try {
-                    frame = new showUsers(mainMenu.getLLusers(), logoImage, a);
+                    showUsers frame = new showUsers(mainMenu.getLLusers(), logoImage, a);
                     frame.pack();
                     frame.setLocationRelativeTo(null);
                     frame.setVisible(true);
@@ -96,7 +107,14 @@ public class showUsers extends JDialog {
             }
         });
     }
-
+    /**
+     * This method is in charge to fill the table with the different users.
+     * @param userLinkedList {@code LinkedList} with the users that you want to show.
+     * @param tableModel {@code DefaultTableModel} for the table
+     * @see user
+     * @see LinkedList
+     * @see DefaultTableModel
+     */
     private void fillTable(LinkedList<user> userLinkedList, DefaultTableModel tableModel) {
         while (tableModel.getRowCount() > 0){
             tableModel.removeRow(0);

@@ -3,17 +3,21 @@ package com.mohamed;
 import com.mohamed.gui.askQuestion;
 import com.mohamed.utils.QuestionsFiles;
 
-import javax.swing.*;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.LinkedList;
 
+/**
+ * This class creates the object {@code round}.
+ */
 public class round {
     private user user;
     private int score;
 
-
-    public round(com.mohamed.user user) {
+    /**
+     * 
+     * @param user
+     */
+    public round(user user) {
         this.user = user;
     }
 
