@@ -12,6 +12,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.LinkedList;
 
+/**
+ * This class creates {@code JDialog} to show all the questions.
+ */
 public class showQuestions extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
@@ -19,6 +22,11 @@ public class showQuestions extends JDialog {
     private JLabel titleLabel;
     private JTable table1;
 
+    /**
+     * THis is the only constructor for the {@code JDialog}.
+     * @param questionsLinkedList {@code LinkedList} with the questions.
+     * @param logoImage {@code ImageIcon} to make it icon.
+     */
     public showQuestions(LinkedList<question> questionsLinkedList, ImageIcon logoImage) {
         setIconImage(logoImage.getImage());
         setContentPane(contentPane);
@@ -28,6 +36,7 @@ public class showQuestions extends JDialog {
         //Setting the table
         DefaultTableModel tableModel = new DefaultTableModel();
         table1.setModel(tableModel);
+        //adding all the headers for the table
         tableModel.addColumn("Nro");
         tableModel.addColumn("Pregunta");
         tableModel.addColumn("Respuesta Correcta");
@@ -76,12 +85,24 @@ public class showQuestions extends JDialog {
         // add your code here if necessary
         dispose();
     }
+
+    /**
+     * This method is in charge to fill the table with the different questions.
+     * @param questionLinkedList {@code LinkedList} with the questions that you want to show.
+     * @param tableModel {@code DefaultTableModel} for the table
+     * @see question
+     * @see LinkedList
+     * @see DefaultTableModel
+     */
     private void fillTable(LinkedList<question> questionLinkedList, DefaultTableModel tableModel) {
+        //here we clear the table before filling it
         while (tableModel.getRowCount() > 0){
             tableModel.removeRow(0);
         }
+        //this is a litle counter to count the number of questions.
         int as = 1;
         for (question qu: questionLinkedList) {
+            //here i travel the question LinkedList and add the question depending if it is short or test
             if (qu.isTest()){
                 tableModel.addRow(new Object[]{as,qu.getQuestion(), qu.getAnswer(), qu.getType(), qu.getCategory(), qu.getAnswer1(), qu.getAnswer2()});
             }else{

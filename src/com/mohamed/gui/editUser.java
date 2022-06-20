@@ -171,13 +171,16 @@ public class editUser extends JDialog {
             String surname = surnameField.getText();
             String pass = new encrypt().securePass(String.valueOf(passwordField1.getPassword()));
             UserFiles uf = new UserFiles();
+            //here I use my own method to update a user
             if (uf.updateUser(actualUser, new user(user, name, surname, pass))){
                 JOptionPane.showMessageDialog(contentPane, "Se ha editado el usuario "+user, "Edicion Completada", JOptionPane.INFORMATION_MESSAGE);
             }
             dispose();
             if (a != null){
+                //if the editUser is prompted from the main menu it closes it
                 a.dispose();
                 try{
+                    //go back to the firts login
                     firstLogin d = new firstLogin(logoImage);
                     d.pack();
                     d.setLocationRelativeTo(null);
@@ -193,10 +196,12 @@ public class editUser extends JDialog {
     }
 
     private void onCancel() {
-        // add your code here if necessary
         dispose();
     }
     //Start of listeners
+    /**
+     * This listener when triggered it shows/hides the password
+     */
     ActionListener showPass = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {

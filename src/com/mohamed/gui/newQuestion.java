@@ -8,6 +8,9 @@ import java.awt.event.*;
 import java.io.IOException;
 import java.util.LinkedList;
 
+/**
+ * This class creates a {@code JDialog}
+ */
 public class newQuestion extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
@@ -24,6 +27,11 @@ public class newQuestion extends JDialog {
     private ImageIcon logoImage;
     private String filenameFromUser;
 
+    /**
+     * This is the constructor to create the {@code JDialog}
+     * @param logoImage {@code ImageIcon} a image to use as icon.
+     * @param filenameFromUser {@code String} the route to the file.
+     */
     public newQuestion(ImageIcon logoImage, String filenameFromUser) {
         this.filenameFromUser = filenameFromUser;
         this.logoImage = logoImage;
@@ -108,10 +116,18 @@ public class newQuestion extends JDialog {
         }
     };
     //Start of methods
+
+    /**
+     * THis method it creates a new question.
+     * @throws IOException if the read/write file fails.
+     * @throws ClassNotFoundException if the question was not found.
+     */
     private void onOK() throws IOException, ClassNotFoundException {
+        //Here we obligate the user to choose one question type
         if (!cortaRadioButton.isSelected() && !testRadioButton.isSelected()){
             JOptionPane.showMessageDialog(contentPane, "Selecciona un tipo de pregunta", "Error", JOptionPane.ERROR_MESSAGE);
         }
+        //Here we do diferent things deppending if it is a test or short question
         if (questionType.toUpperCase().equals("SHORT")){
             String shortTitle = textField1.getText();
             String answer1 = textField2.getText();
@@ -139,6 +155,15 @@ public class newQuestion extends JDialog {
         // add your code here if necessary
         dispose();
     }
+
+    /**
+     * This method validates test questions.
+     * @param question {@code String} the question statement.
+     * @param answer1 {@code String} the correct answer.
+     * @param answer2 {@code String} the first decoy answer.
+     * @param answer3 {@code String} the second decoy answer.
+     * @return {@code true} if the question is valid,  {@code false} otherwise.
+     */
     public boolean validatorTest(String question, String answer1, String answer2, String answer3){
         if (question.isBlank() || answer1.isBlank() || answer2.isBlank() || answer3.isBlank()){
             return false;
@@ -146,6 +171,12 @@ public class newQuestion extends JDialog {
             return true;
         }
     }
+    /**
+     * This methods validates short questions.
+     * @param question {@code String} the question statement.
+     * @param answer1 {@code String} the correct answer.
+     * @return {@code true} if the question is valid, {@code false} otherwise.
+     */
     public boolean validatorShort(String question, String answer1){
         if (question.isBlank() || answer1.isBlank()){
             return false;
@@ -153,6 +184,16 @@ public class newQuestion extends JDialog {
             return true;
         }
     }
+
+    /**
+     * This method creates a new short question.
+     * @param title {@code String} the statement for the question.
+     * @param answer1 {@code String} the answer for the question.
+     * @throws IOException if the read/write of the file fails
+     * @throws ClassNotFoundException if the read/write of the class fails
+     * @see QuestionsFiles
+     * @see LinkedList
+     */
     public void newShortQuestion(String title, String answer1) throws IOException, ClassNotFoundException {
         QuestionsFiles qf;
         if (filenameFromUser == null){
@@ -162,10 +203,20 @@ public class newQuestion extends JDialog {
         }
         LinkedList<question> questionLinkedList = new LinkedList<>();
         question qu1 = new question(questionType,comboBox1.getSelectedItem().toString() , title, answer1);
-        System.out.println(qu1.toString());
         questionLinkedList.add(qu1);
         qf.saveQuestions(questionLinkedList);
     }
+    /**
+     * This method creates a new short question.
+     * @param title {@code String} the statement for the question.
+     * @param answer1 {@code String} the answer for the question.
+     * @param answer2 {@code String} the first decoy answer.
+     * @param answer3 {@code String} the second decoy answer.
+     * @throws IOException if the read/write of the file fails
+     * @throws ClassNotFoundException if the read/write of the class fails
+     * @see QuestionsFiles
+     * @see LinkedList
+     */
     public void newTestQuestion(String title, String answer1, String answer2, String answer3) throws IOException, ClassNotFoundException {
         QuestionsFiles qf;
         if (filenameFromUser == null){
@@ -176,7 +227,6 @@ public class newQuestion extends JDialog {
         LinkedList<question> questionLinkedList = new LinkedList<>();
         question qu1 = new question(questionType,comboBox1.getSelectedItem().toString() , title, answer1, answer2, answer3);
         questionLinkedList.add(qu1);
-        System.out.println(qu1.toString());
         qf.saveQuestions(questionLinkedList);
     }
 

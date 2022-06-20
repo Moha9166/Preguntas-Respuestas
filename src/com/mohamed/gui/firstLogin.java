@@ -12,6 +12,9 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.LinkedList;
 
+/**
+ * This class it creates a new {@code JFrame}
+ */
 public class firstLogin extends JFrame{
     public JPanel panel;
     private JLabel pic;
@@ -28,6 +31,11 @@ public class firstLogin extends JFrame{
     private Boolean visible = false;
     private ImageIcon logoImage;
 
+    /**
+     * This constructor creates a login window.
+     * @param logoImage {@code ImageIcon} to make it windows icon.
+     * @throws IOException if there is any problem while login.
+     */
     public firstLogin(ImageIcon logoImage) throws IOException {
         this.logoImage = logoImage;
         setContentPane(panel);
@@ -47,6 +55,7 @@ public class firstLogin extends JFrame{
         }
         setTitle("Preguntas & Respuestas");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //Setting the menu to make the new users able to register
         JMenuBar menuBar = new JMenuBar();
         JMenu regMenu = new JMenu("Nuevo");
         JMenuItem regItem = new JMenuItem("Registrate");
@@ -115,6 +124,16 @@ public class firstLogin extends JFrame{
         }
     };
     //Start of methods
+
+    /**
+     * This method is in charge of the user login.
+     * @param user {@code String}  the userName of the user.
+     * @param pass {@code String} the password of the user.
+     * @return  {@code True} if the logging was successful, {@code false} otherwise.
+     * @throws IOException if there is a fail reading the users file.
+     * @throws ClassNotFoundException if there is no users in the file.
+     * @throws NoSuchAlgorithmException if the password encryption fails.
+     */
     private boolean login(String user, String pass) throws IOException, ClassNotFoundException, NoSuchAlgorithmException {
         boolean logSuccees = false;
         String adminpass ="fa585d89c851dd338a70dcf535aa2a92fee7836dd6aff1226583e88e0996293f16bc009c652826e0fc5c706695a03cddce372f139eff4d13959da6f1f5d3eabe";

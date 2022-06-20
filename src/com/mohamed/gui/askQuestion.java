@@ -138,6 +138,7 @@ public class askQuestion extends JDialog {
         }
     }
 
+
     public boolean isContinuePlay() {
         return continuePlay;
     }

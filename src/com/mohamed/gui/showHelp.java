@@ -6,6 +6,9 @@ import java.awt.event.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+/**
+ * This class creates a new  {@code JDialog}
+ */
 public class showHelp extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
@@ -13,10 +16,15 @@ public class showHelp extends JDialog {
     private JTextArea textArea1;
     private JLabel titleLabel;
 
+    /**
+     *This is the main constructor for the object
+     * @param imageIcon
+     */
     public showHelp(ImageIcon imageIcon) {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
+        setIconImage(imageIcon.getImage());
         //Setting title font and size
         titleLabel.setFont(new Font("Tahoma", Font.BOLD, 15));
         //Setting the content of the text area and disabling the editable property.
