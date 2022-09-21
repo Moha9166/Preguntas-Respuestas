@@ -4,7 +4,9 @@ import com.mohamed.gui.askQuestion;
 import com.mohamed.domain.question;
 import com.mohamed.domain.user;
 
+import javax.swing.*;
 import java.io.IOException;
+import java.net.URL;
 import java.util.LinkedList;
 
 /**
@@ -51,9 +53,12 @@ public class round {
                 return;
             }
             LinkedList<Boolean> userScores = new LinkedList<>();
+            URL logoURL = new URL("https://raw.githubusercontent.com/Moha9166/logos/main/logo.png");
+            ImageIcon logo = new ImageIcon(logoURL, "logo");
             for (question ques:questionLinkedList) {
-                askQuestion dialog = new askQuestion(ques);
+                askQuestion dialog = new askQuestion(ques, logo);
                 dialog.pack();
+                dialog.setBounds(0,0,400, 280);
                 dialog.setLocationRelativeTo(null);
                 dialog.setVisible(true);
                 userScores.add(dialog.userAnswered());

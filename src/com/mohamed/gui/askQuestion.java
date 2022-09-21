@@ -19,17 +19,20 @@ public class askQuestion extends JDialog {
     private JRadioButton answer3Radio;
     private JTextField shortQuesAnsw;
     private JLabel shortQuesLbl;
+    private JLabel catLabel;
+    private JLabel cattitleLBL;
     private question questionIN;
     private ButtonGroup bt;
     private static boolean continuePlay;
-    private static boolean response;
+    private static boolean response = false;
 
     /**
      * This constructor is used to create a new {@code JDialog}
      * @param questionIN the question that you want to ask
      */
-    public askQuestion(question questionIN) {
+    public askQuestion(question questionIN, ImageIcon logoImage) {
         this.questionIN = questionIN;
+        setIconImage(logoImage.getImage());
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(answerQuestion);
@@ -53,6 +56,8 @@ public class askQuestion extends JDialog {
         bt.add(answer1Radio);
         bt.add(answer2Radio);
         bt.add(answer3Radio);
+        //setting the catlabel
+        catLabel.setText(questionIN.getCategory());
 
 
 

@@ -14,10 +14,4 @@ public class encryptTest {
         String actual = new encrypt().securePass("testPass");
         assertEquals(expected, actual);
     }
-//    @Test
-//    void should_throw_an_exception() throws NoSuchAlgorithmException {
-//        encrypt encrypt = new encrypt();
-//        encrypt.algorithm = "asdf";
-//        assertThrows(NoSuchAlgorithmException, encrypt.securePass("asdf"));
-//    }
 }
